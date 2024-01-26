@@ -1,0 +1,100 @@
+<!-- Form events -->
+<p-dialog [(visible)]="dialogFormVisible" [modal]="true" [draggable]="false" (onHide)="closeDialog()">
+  <ng-container>
+    <ng-template pTemplate="header">
+      <h3>{{ this.event.id !== undefined ? ('events.editEvent' | transloco) : ('events.newEvent' | transloco ) }}</h3>
+    </ng-template>
+
+    <ng-template pTemplate="content">
+      <div class="p-fluid p-grid">
+        <form [formGroup]="form">
+          <input type="hidden" formControlName="id" id="id" name="id" />
+
+          <div class="field">
+            <label for="title" class="required">{{ 'events.formEvent.eventTitle' | transloco }}</label>
+            <input type="text" pInputText id="title" formControlName="title" name="title" required autofocus />
+            <small *ngIf="form.controls.title.touched && form.controls.title.hasError('required')"
+              class="text-danger">{{ 'events.formValidator.title' | transloco }}</small>
+          </div>
+
+          <div class="p-field">
+            <label for="color" class="required">{{ 'events.formEvent.eventColor' | transloco }}</label>
+            <input type="color" class="d-block w-100" id="color" formControlName="color" name="color" required />
+            <small *ngIf="form.controls.color.touched && form.controls.color.hasError('required')"
+              class="text-danger">{{ 'events.formValidator.color' | transloco }}</small>
+          </div>
+
+          <div class="row grid">
+            <div class="field col">
+              <label class="required">{{ 'events.formEvent.eventStart' | transloco }}</label>
+              <p-calendar id="start" [showTime]="true" [showIcon]="true" [appendTo]="'body'" formControlName="start"
+                name="start"></p-calendar>
+              <small *ngIf="form.controls.start.touched && form.controls.start.hasError('required')"
+                class="text-danger">{{ 'events.formValidator.start' | transloco }}</small>
+            </div>
+
+            <div class="field col">
+              <label class="required">{{ 'events.formEvent.eventEnd' | transloco }}</label>
+              <p-calendar id="end" [showTime]="true" [showIcon]="true" [appendTo]="'body'" formControlName="end"
+                name="end"></p-calendar>
+              <small *ngIf="form.controls.end.touched && form.controls.end.hasError('required')" class="text-danger">{{
+                'events.formValidator.end' | transloco }}</small>
+            </div>
+          </div>
+          
+          <ng-template [ngIf]="!auth.hasRole(['SUPERADMIN'])">
+            <div class="field">
+              <label class="required">{{ 'events.formEvent.AddressesTo' | transloco }}</label>
+              <p-dropdown [options]="dropdownOptions" optionValue="label" placeholder="Select" [appendTo]="'body'"
+                formControlName="role" id="role" name="role"></p-dropdown>
+              <small *ngIf="form.controls.end.touched && form.controls.end.hasError('required')" class="text-danger">{{
+                'events.formValidator.end' | transloco }}</small>
+            </div>
+          </ng-template>
+        </form>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <button *ngIf="this.event.id != null" class="btn btn-danger" (click)="delete(this.event)">{{ 'delete' | transloco
+        }}</button>
+      <button class="btn btn-dark" (click)="closeDialog()">{{ 'discard' | transloco }}</button>
+      <button (click)="submit()" type="submit" class="btn btn-primary" [disabled]="loading">
+        <span *ngIf="!loading">{{ 'submit' | transloco }}</span>
+        <span *ngIf="loading">{{ 'waiting' | transloco }}</span>
+      </button>
+    </ng-template>
+  </ng-container>
+</p-dialog>
+
+<p-dialog [(visible)]="dialogVisible">
+  <ng-container>
+    <ng-template pTemplate="header">
+      <h3>{{ this.event.title }}</h3>
+    </ng-template>
+    <ng-template pTemplate="content">
+      <div class="p-fluid p-grid">
+        <p>{{ 'events.startDate' | transloco }}: {{ this.event.start | date:'medium' }}</p>
+        <p>{{ 'events.endDate' | transloco }}: {{ this.event.end | date:'medium' }}</p>
+      </div>
+    </ng-template>
+  </ng-container>
+</p-dialog>
+
+<div class="d-flex justify-content-between">
+  <h3 class="align-middle">{{ "calendar.calendar" | transloco }}</h3>
+
+  <p-button (click)="showDialogForm()" class="float-right" label="{{ 'events.newEvent' | transloco }}"
+    icon="pi pi-plus"></p-button>
+</div>
+
+<p-divider></p-divider>
+
+<div class="demo-app">
+  <full-calendar #calendar *ngIf='calendarVisible' [options]='calendarOptions'>
+    <ng-template #eventContent let-arg>
+      <b>{{ arg.timeText }}</b>
+      <i>{{ arg.event.title }}</i>
+    </ng-template>
+  </full-calendar>
+</div>

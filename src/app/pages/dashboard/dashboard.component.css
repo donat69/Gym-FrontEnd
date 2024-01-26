@@ -1,0 +1,53 @@
+.card--button {
+  float: right;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.card1 {
+  border-left-width: 7px;
+  border-left-style: solid;
+  border-left-color: blue;
+}
+
+.card2 {
+  border-left-width: 7px;
+  border-left-style: solid;
+  border-left-color: green;
+}
+
+.card3 {
+  border-left-width: 7px;
+  border-left-style: solid;
+  border-left-color: rgb(126, 1, 175);
+}
+
+.card4 {
+  border-left-width: 7px;
+  border-left-style: solid;
+  border-left-color: rgb(255, 196, 0);
+}
+
+.card5 {
+  border-left-width: 7px;
+  border-left-style: solid;
+  border-left-color: #f97316;
+}
+
+.card6 {
+  border-left-width: 7px;
+  border-left-style: solid;
+  border-left-color: #d9342b;
+}
+
+table {
+  text-align: center;
+  padding: 10%;
+  width: 100%;
+  height: 50%;
+}
+
+.small-chart {
+  width: 2000px;
+  height: 2000px;
+}

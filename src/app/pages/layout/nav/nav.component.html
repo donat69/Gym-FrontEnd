@@ -1,0 +1,179 @@
+<header class="header_note" *ngIf="environment.demo == true">
+  <div class="header__message">
+      DEMO: {{ 'demo' | transloco }} <a href="https://codecanyon.net/item/gymtrack-management-system-for-multiple-gyms-saas/46479592" target="_blank" style="color: green;">CodeCanyon</a>
+  </div>
+</header>
+
+<div class="d-flex justify-content-between header bg-white">
+  <div class="toogleMenu">
+    <div class="btn btn-icon btn-active-light-primary w-30px h-40px w-md-40px h-md-40px toggleMenu"
+      data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-left: 15px;">
+      <i class="fa-solid fa-bars burger"></i>
+    </div>
+
+  </div>
+
+  <div class="">
+    <!-- <button class="btn" type="button" (click)="toggleDropdowns()"
+      [attr.aria-expanded]="isDropdownOpens ? 'true' : 'false'" #languageDropdown>
+      <img alt="lang" [src]="selectedCountryImage" class="h-25px logo" />
+    </button>
+    <ul class="dropdown-menu" [class.show]="isDropdownOpens" aria-labelledby="dropdownMenuButton">
+      <li *ngFor="let option of options">
+        <a class="dropdown-item" (click)="selectCountry(option.image, option.lang)">
+          <img alt="lang" [src]="option.image" class="h-25px logo" />
+          {{ option.text() }}
+        </a>
+      </li>
+    </ul> -->
+
+    <button class="btn" type="button">
+      <div class="icon-container">
+        <i class="fa-solid fa-bell text-3xl" style="color: #404040;"></i>
+        <p-badge value="0" class="badge"></p-badge>
+      </div>
+    </button>
+
+    <button class="btn" type="button" (click)="toggleDropdown()"
+      [attr.aria-expanded]="isDropdownOpen ? 'true' : 'false'">
+      <i class="fa-solid fa-user" style="color: #404040;"></i>
+      {{ auth.user?.name.split(" ")[0] }}
+    </button>
+    <ul style="margin-left: 10%;" class="dropdown-menu drop" [class.show]="isDropdownOpen"
+      aria-labelledby="dropdownMenuButton">
+      <li><a class="dropdown-item" routerLink="/profile">{{ 'nav.profile' | transloco }}</a></li>
+      <li><a class="dropdown-item" routerLink="/password">{{ 'nav.changePassword' | transloco }}</a></li>
+      <li><a class="dropdown-item" routerLink="/logout">{{ 'nav.logout' | transloco }}</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="modal fade toggleMenu" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+  aria-hidden="true" style="background-color: rgba(0, 0, 0, 0.678);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background-color: rgba(0, 0, 0, 0.178);">
+      <div class="modal-body text-center">
+        <div class="d-flex justify-content-center div-modal" #containerElement>
+          <div class="w-40">
+            <div class="menu-item">
+              <a [class]="route == '/dashboard' ? 'menu-link active' : 'menu-link'" routerLink="/dashboard">
+                <span class="menu-title"><i class="fa-solid fa-chart-line"></i>&nbsp;&nbsp;{{ 'leftmenu.dashboard' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN'])">
+              <a [class]="route == '/licences' ? 'menu-link active' : 'menu-link'" routerLink="/licences/list">
+                <span class="menu-title"><i class="fa-solid fa-certificate"></i>&nbsp;&nbsp;{{ 'leftmenu.licences' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN'])">
+              <a [class]="route == '/owners' ? 'menu-link active' : 'menu-link'" routerLink="/owners/list">
+                <span class="menu-title"><i class="fa-sharp fa-solid fa-crown"></i>&nbsp;&nbsp;{{ 'leftmenu.owners' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN'])">
+              <a [class]="route == '/gyms' ? 'menu-link active' : 'menu-link'" routerLink="/gyms/list">
+                <span class="menu-title"><i class="fa-solid fa-dumbbell"></i>&nbsp;&nbsp;{{ 'leftmenu.gyms' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN'])">
+              <a [class]="route == '/users' ? 'menu-link active' : 'menu-link'" routerLink="/users/list">
+                <span class="menu-title"> <i
+                    class="fa-solid fa-users-viewfinder"></i>&nbsp;&nbsp;{{ 'leftmenu.users' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+              <a [class]="route == '/members' ? 'menu-link active' : 'menu-link'" routerLink="/members/list">
+                <span class="menu-title"><i class="fa-solid fa-id-card"></i>&nbsp;&nbsp;{{ 'leftmenu.members' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['ADMIN'])">
+              <a [class]="route == '/memberships' ? 'menu-link active' : 'menu-link'"
+                routerLink="/memberships/list">
+                <span class="menu-title"><i class="fa-solid fa-user-group"></i>&nbsp;&nbsp;{{ 'leftmenu.memberships' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+              <a [class]="route == '/payments' ? 'menu-link active' : 'menu-link'" routerLink="/payments/list">
+                <span class="menu-title"><i class="fa-solid fa-sack-dollar"></i>&nbsp;&nbsp;{{ 'leftmenu.payments' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+              <a [class]="route == '/visits' ? 'menu-link active' : 'menu-link'" routerLink="/visits/list">
+                <span class="menu-title"><i class="fas fa-clock"></i>&nbsp;&nbsp;{{ 'leftmenu.visits' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+              <a [class]="route == '/realtime' ? 'menu-link active' : 'menu-link'" routerLink="/realtime">
+                <span class="menu-title"><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;{{ 'leftmenu.screenvisits' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+              <a [class]="route == '/pos' ? 'menu-link active' : 'menu-link'" routerLink="/pos">
+                <span class="menu-title"><i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;POS</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+              <a class="menu-link" data-toggle="collapse" href="#storesMenu" role="button" aria-expanded="false" aria-controls="storesMenu">
+                <span class="menu-title"><i class="fa-solid fa-store"></i>&nbsp;&nbsp;{{ 'leftmenu.store' | transloco }}</span>
+                <i class="fas fa-chevron-down"></i>
+              </a>
+    
+              <div class="collapse" id="storesMenu">
+                <ul class="submenu"> 
+                  <a *ngIf="auth.hasRole(['ADMIN', 'STAFF'])" class="m-1 d-flex" style="color: #bcc0c0;" [class]="route == '/store/categories/list' ? 'submenu-link active' : 'submenu-link'" routerLink="/store/categories/list">&nbsp;&nbsp; {{ 'leftmenu.Categories' | transloco }}</a>
+                  
+                  <a *ngIf="auth.hasRole(['ADMIN', 'STAFF'])" class="m-1 d-flex" style="color: #bcc0c0;" [class]="route == '/store/subcategories/list' ? 'submenu-link active' : 'submenu-link'" routerLink="/store/subcategories/list">&nbsp;&nbsp; {{ 'leftmenu.Subcategories' | transloco }}</a>
+    
+                  <a *ngIf="auth.hasRole(['ADMIN', 'STAFF'])" class="m-1 d-flex" style="color: #bcc0c0;" [class]="route == '/store/products/list' ? 'submenu-link active' : 'submenu-link'" routerLink="/store/products/list">&nbsp;&nbsp; {{ 'leftmenu.Products' | transloco }}</a>
+    
+                  <a *ngIf="auth.hasRole(['ADMIN'])" class="m-1 d-flex" style="color: #bcc0c0;" [class]="route == '/store/sales/list' ? 'submenu-link active' : 'submenu-link'" routerLink="/store/sales/list">&nbsp;&nbsp; {{ 'leftmenu.Sales' | transloco }}</a>
+                </ul>
+              </div>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['ADMIN'])">
+              <a class="menu-link" data-toggle="collapse" href="#reportsMenu" role="button" aria-expanded="false" aria-controls="reportsMenu">
+                <span class="menu-title"><i class="fas fa-fw fa-chart-bar"></i>&nbsp;&nbsp;{{ 'leftmenu.reports' | transloco }}</span>
+                <i class="fas fa-chevron-down"></i>
+              </a>
+    
+              <div class="collapse" id="reportsMenu">
+                <ul class="submenu">
+                
+                  <a class="m-1 d-flex " style="color: #bcc0c0;" [class]="route == '/reports/members' ? 'submenu-link active' : 'submenu-link'" routerLink="/reports/members">&nbsp;&nbsp;{{ 'leftmenu.members' | transloco }}</a>
+              
+                  <a class="m-1 d-flex" style="color: #bcc0c0;" [class]="route == '/reports/payments' ? 'submenu-link active' : 'submenu-link'" routerLink="/reports/payments">&nbsp;&nbsp;{{ 'leftmenu.payments' | transloco }}</a>
+                
+                </ul>
+              </div>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN', 'ADMIN'])">
+              <a [class]="route == '/emails' ? 'menu-link active' : 'menu-link'" routerLink="/emails">
+                <span class="menu-title"><i class="fa-sharp fa-solid fa-envelopes-bulk"></i>&nbsp;&nbsp;{{ 'leftmenu.messenger' | transloco }}</span>
+              </a>
+            </div>
+    
+            <div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN'])">
+              <a [class]="route == '/settings' ? 'menu-link active' : 'menu-link'" routerLink="/settings">
+                <span class="menu-title"> <i 
+                  class="fa-solid fa-gears"></i>&nbsp;&nbsp;{{ 'leftmenu.settings' | transloco }}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

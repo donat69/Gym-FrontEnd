@@ -1,0 +1,10 @@
+.arrodown {
+    cursor: pointer;
+    justify-content: end;
+}
+
+.card1 {
+    border-left-width: 7px;
+    border-left-style: solid;
+    border-left-color: rgb(74, 182, 1);
+}

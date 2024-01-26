@@ -1,0 +1,201 @@
+<div id="loader" *ngIf="loading"></div>
+
+<div id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed"
+    style="--kt-toolbar-height: 55px; --kt-toolbar-height-tablet-and-mobile: 55px">
+    <div class="d-flex flex-column flex-root">
+        <div class="page d-flex flex-row flex-column-fluid">
+            <app-leftmenu></app-leftmenu>
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <app-nav></app-nav>
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="toolbar" id="kt_toolbar">
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
+                                data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
+                                class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                                    {{ 'payments.managePayments' | transloco }}
+                                </h1>
+                                <span class="h-20px border-gray-300 border-start mx-4"></span>
+                                <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                                    <li class="breadcrumb-item text-dark" *ngIf="!loading">
+                                        <span *ngIf="payment.id">{{ 'payments.updatePayment' | transloco }}</span>
+                                        <span *ngIf="!payment.id">{{ 'payments.addPayment' | transloco }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="payment d-flex flex-column-fluid" id="kt_payment">
+                        <div id="kt_content_container" class="container-xxl">
+                            <app-calculator></app-calculator>
+                            <div class="card mb-5 mb-xl-10">
+                                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                                    data-bs-target="#kt_account_profile_details" aria-expanded="true"
+                                    aria-controls="kt_account_profile_details">
+                                    <div class="card-title m-0">
+                                        <h3 class="fw-bolder m-0">
+                                            <span *ngIf="payment.id">{{ 'payments.updatePayment' | transloco }}</span>
+                                            <span *ngIf="!payment.id">{{ 'payments.addPayment' | transloco }}</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div id="kt_account_settings_profile_details" class="collapse show">
+                                    <form id="kt_account_profile_details_form"
+                                        class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate"
+                                        [formGroup]="form" (submit)="submit()">
+                                        <div class="card-body border-top p-9">
+                                            <div class="row mb-6">
+                                                <label
+                                                    class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'payments.member' | transloco }}</label>
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select
+                                                                class="form-select form-select-solid form-control-lg mb-3 mb-lg-0"
+                                                                formControlName="memberId" name="memberId">
+                                                                <option value="" disabled selected>{{ 'payments.selectmember' | transloco }}
+                                                                </option>
+                                                                <option *ngFor="let member of members"
+                                                                    [value]="member.id">{{ member.name }}</option>
+                                                            </select>
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div
+                                                                    *ngIf="form.controls.memberId.touched && form.controls.memberId.hasError('required')">
+                                                                    Member is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label
+                                                    class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'payments.membership' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select
+                                                                class="form-select form-select-solid form-control-lg mb-3 mb-lg-0"
+                                                                formControlName="membershipId" name="membershipId"
+                                                                (change)="onMembershipChange()">
+                                                                <option value="" disabled selected>{{ 'payments.selectmembership' | transloco }}
+                                                                </option>
+                                                                <option *ngFor="let membership of memberships"
+                                                                    [value]="membership.id">{{ membership.name }}
+                                                                </option>
+                                                            </select>
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div
+                                                                    *ngIf="form.controls.membershipId.touched && form.controls.membershipId.hasError('required')">
+                                                                    Membership is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Etiqueta con *ngIf para mostrar el precio de una membresía seleccionada
+                                            <div *ngIf="showAmount">
+                                                <h3 class="text-center text-dark text-uppercase">&mdash; {{ getSelectedMembershipPrice() }} &mdash;</h3>
+                                            </div>-->
+
+                                            <div *ngIf="showAmount">
+                                                <span>{{ getSelectedMembershipPrice() }}</span>
+                                            </div>
+
+                                            <div class="row mb-6" *ngIf="showAmount">
+                                                <label
+                                                    class="col-lg-4 col-form-label required fw-bold fs-6">Amount</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <input type="number"
+                                                            class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                            placeholder="Amount" formControlName="amount"
+                                                            name="amount" />
+                                                    </div>
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        <div
+                                                            *ngIf="form.controls.amount.touched && form.controls.amount.hasError('required')">
+                                                            Amount is required
+                                                        </div>
+                                                        <div
+                                                            *ngIf="form.controls.amount.dirty && form.controls.amount.errors">
+                                                            Invalid Amount
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'payments.paymentmethod' | transloco }}</label>
+                                            
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="paymentMethod"
+                                                                name="paymentMethod">
+                                                                <option value="" disabled selected>{{ 'payments.selectpaymentmethod' | transloco }}</option>
+                                                                <option value="CASH">{{ 'payments.cash' | transloco }}</option>
+                                                                <option value="CARD">{{ 'payments.card' | transloco }}</option>
+                                                                <option value="TRANSFER">{{ 'payments.transfer' | transloco }}</option>
+                                                            </select>
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.paymentMethod.touched && form.controls.paymentMethod.hasError('required')">
+                                                                    Payment method is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'payments.startdate' | transloco }}</label>
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="date"
+                                                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                placeholder="Start Date" formControlName="startDate"
+                                                                name="startDate" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div
+                                                                    *ngIf="form.controls.startDate.touched && form.controls.startDate.hasError('required')">
+                                                                    Date is required
+                                                                </div>
+                                                                <div
+                                                                    *ngIf="form.controls.startDate.dirty && form.controls.startDate.errors">
+                                                                    Invalid Date
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                            <button routerLink="/payments/list" type="button" class="btn btn-dark">
+                                                {{ 'discard' | transloco }}
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button type="submit" class="btn btn-primary" [disabled]="loading">
+                                                <span *ngIf="!loading">{{ 'submit' | transloco }}</span>
+                                                <span *ngIf="loading">{{ 'waiting' | transloco }}</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-footer></app-footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

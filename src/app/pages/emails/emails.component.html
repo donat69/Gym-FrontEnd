@@ -1,0 +1,147 @@
+<div id="loader" *ngIf="loading"></div>
+
+<div id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed"
+  style="--kt-toolbar-height: 55px; --kt-toolbar-height-tablet-and-mobile: 55px">
+  <div class="d-flex flex-column flex-root">
+    <div class="page d-flex flex-row flex-column-fluid">
+      <app-leftmenu></app-leftmenu>
+      <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+        <app-nav></app-nav>
+        <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+          <div class="toolbar" id="kt_toolbar">
+            <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+              <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
+                data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
+                class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                  {{ 'emails.messenger' | transloco }}
+                </h1>
+                <span class="h-20px border-gray-300 border-start mx-4"></span>
+                <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                  <li class="breadcrumb-item text-dark" *ngIf="!loading">
+                    {{ 'emails.sendEmails' | transloco }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="post d-flex flex-column-fluid" id="kt_post">
+            <div id="kt_content_container" class="container-xxl">
+              <div class="card mb-5 mb-xl-10">
+                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                  data-bs-target="#kt_account_profile_details" aria-expanded="true"
+                  aria-controls="kt_account_profile_details">
+                  <div class="card-title m-0">
+                    <h3 class="fw-bolder m-0">{{ 'emails.sendEmails' | transloco }}</h3>
+                  </div>
+                </div>
+                <div id="kt_account_settings_profile_details" class="collapse show">
+                  <form id="kt_account_profile_details_form" class="form fv-plugins-bootstrap5 fv-plugins-framework"
+                    novalidate="novalidate" [formGroup]="form" (submit)="submit()">
+                    <div class="card-body border-top p-9">
+
+                      <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-bold fs-6">
+                          {{ 'emails.messageTo' | transloco }}
+                        </label>
+
+                        <div class="col-lg-8">
+                          <div class="row">
+                            <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                              <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0"
+                                formControlName="recipientType" name="recipientType">
+                                <option value="" disabled selected>{{ 'emails.selectRecipient' | transloco }}</option>
+                                <option value="members" *ngIf="auth.hasRole(['ADMIN'])">{{ 'emails.members' | transloco }}</option>
+                                <option value="users" *ngIf="auth.hasRole(['SUPERADMIN'])">
+                                  {{ 'emails.users' | transloco }}
+                                </option>
+                                <option value="specific">{{ 'emails.specificEmail' | transloco }}</option>
+                              </select>
+                              <div class="fv-plugins-message-container invalid-feedback">
+                                <div
+                                  *ngIf="form.controls.recipientType.touched && form.controls.recipientType.hasError('required')">
+                                  Recipient is required
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row mb-6" *ngIf="form.value.recipientType === 'specific'">
+                        <label class="col-lg-4 col-form-label required fw-bold fs-6">
+                          {{ 'emails.email' | transloco }}
+                        </label>
+                        <div class="col-lg-8">
+                          <div class="row">
+                            <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                              <input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Email" formControlName="specificEmail" name="specificEmail" />
+                              <div class="fv-plugins-message-container invalid-feedback">
+                                <div *ngIf="form.controls.specificEmail.touched && form.controls.specificEmail.hasError('required')">
+                                  Email is required
+                                </div>
+                                <div *ngIf="form.controls.specificEmail.dirty && form.controls.specificEmail.errors">
+                                  Invalid Emails
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label required fw-bold fs-6">
+                          {{ 'emails.subject' | transloco }}
+                        </label>
+                        <div class="col-lg-8">
+                          <div class="row">
+                            <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                              <input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="{{ 'emails.subject' | transloco }}" formControlName="subject" name="subject" />
+                              <div class="fv-plugins-message-container invalid-feedback">
+                                <div *ngIf="form.controls.subject.touched && form.controls.subject.hasError('required')">
+                                  Subject is required
+                                </div>
+                                <div *ngIf="form.controls.subject.dirty && form.controls.subject.errors">
+                                  Invalid subject
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="row mb-6">
+                        <label class="col-lg-4 col-form-label fw-bold fs-6 required">
+                          {{ 'emails.message' | transloco }}
+                        </label>
+                        <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                          <textarea class="form-control form-control-lg form-control-solid" placeholder="{{ 'emails.writeMessage' | transloco }}" formControlName="message" name="message"></textarea>
+                          <div class="fv-plugins-message-container invalid-feedback">
+                            <div *ngIf="form.controls.message.touched && form.controls.message.hasError('required')">
+                              Field is required
+                            </div>
+                            <div *ngIf="form.controls.message.dirty && form.controls.message.errors">
+                              Invalid
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-end py-6 px-9">
+                      <button type="submit" class="btn btn-primary" [disabled]="loading">
+                        <span *ngIf="!loading">{{ 'submit' | transloco }}</span>
+                        <span *ngIf="loading">{{ 'waiting' | transloco }}</span>
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-footer></app-footer>
+      </div>
+    </div>
+  </div>
+</div>

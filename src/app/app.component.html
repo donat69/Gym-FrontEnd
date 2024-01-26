@@ -1,0 +1,5 @@
+<!-- <h1 *ngIf="loading" class="vertical-center">{{ 'loading' | transloco }}</h1> -->
+<div [style.display]="isLoading ? 'block' : 'none'" class="loading-overlay">
+  <p-progressSpinner class="position-absolute top-50 start-50 translate-middle"></p-progressSpinner>
+</div>
+<router-outlet *ngIf="!loading"></router-outlet>

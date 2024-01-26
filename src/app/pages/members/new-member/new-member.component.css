@@ -1,0 +1,23 @@
+.p-image-responsive {
+    width: 100%;
+    height: auto;
+  }
+  
+.preview {
+    border: 1px solid #2e518b;
+}
+
+.inputImg {
+    margin-bottom: 20px;
+}
+
+.scaleImagen {
+    margin-bottom: 20px;
+    margin-left: auto !important;
+    object-fit: cover;
+}
+
+.imagen {
+    width: 240px;
+    height: 255px;
+}

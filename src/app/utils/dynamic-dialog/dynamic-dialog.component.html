@@ -1,0 +1,40 @@
+<form >
+  <div class="p-fluid p-grid">
+    <div class="field">
+      <label for="name">Event Title</label>
+      <input type="text" pInputText id="name"  required autofocus />
+      <small class="ng-dirty ng-invalid" >Name is required.</small>
+    </div>
+    <div class="p-field">
+      <label for="colorEvento">Event Color</label>
+      <input type="color" class="d-block w-100" id="colorEvento" />
+    </div>
+
+    <div class="row grid">
+      <div class="field col">
+          <label for="starts">Event Starts</label>
+          <p-inputNumber id="starts"  mode="currency" currency="USD" locale="en-US"></p-inputNumber>
+      </div>
+      <div class="field col">
+          <label for="ends">Event Ends</label>
+          <p-inputNumber id="ends" ></p-inputNumber>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="status">Addresses To</label>
+      <p-dropdown  inputId="inventoryStatus" optionValue="label"  placeholder="Select">
+          <ng-template pTemplate="selectedItem">
+              <span ></span>
+          </ng-template>
+          <ng-template let-option pTemplate="item">
+              <span [class]="'product-badge status-' + option.value">{{option.label}}</span>
+          </ng-template>
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="p-field">
+    <button type="submit" pButton label="Guardar"></button>
+  </div>
+</form>

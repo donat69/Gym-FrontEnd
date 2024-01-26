@@ -1,0 +1,235 @@
+<div id="loader" *ngIf="loading"></div>
+
+<div id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed" style="--kt-toolbar-height: 55px; --kt-toolbar-height-tablet-and-mobile: 55px">
+    <div class="d-flex flex-column flex-root">
+        <div class="page d-flex flex-row flex-column-fluid">
+            <app-leftmenu></app-leftmenu>
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <app-nav></app-nav>
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="toolbar" id="kt_toolbar">
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                                    {{ 'memberReports.reports' | transloco }}
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reports d-flex flex-column-fluid" id="kt_reports">
+                        <div id="kt_content_container" class="container-xxl">
+                            <div class="card mb-5 mb-xl-10" [hidden]="!showForm">
+                                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                                    data-bs-target="#kt_account_profile_details" aria-expanded="true"
+                                    aria-controls="kt_account_profile_details">
+                                    <div class="card-title m-0">
+                                        <h3 class="fw-bolder m-0">
+                                            {{ 'memberReports.generate' | transloco }}
+                                        </h3>
+                                    </div>
+                                </div>
+                                
+                                <div id="kt_reports" class="collapse show">
+                                    <form id="kt_account_profile_details_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate" [formGroup]="form" (submit)="submit()"> 
+                                        <div class="card-body border-top p-9">
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'memberReports.reportstart' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="date" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" formControlName="startDate" name="startDate" />
+                                                            
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.startDate.touched && form.controls.startDate.hasError('required')">
+                                                                    Start Date is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'memberReports.reportend' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="date" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" formControlName="endDate" name="endDate" />
+                                                            
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.startDate.touched && form.controls.startDate.hasError('required')">
+                                                                    End Date is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                            <button type="submit" class="btn btn-primary" [disabled]="loading">
+                                                <span *ngIf="!loading">{{ 'memberReports.buttongenerate' | transloco }}</span>
+                                                <span *ngIf="loading">{{ 'waiting' | transloco }}</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-12 col-md-12 mb-4">
+                                <div class="card shadow card1 h-100 py-2" [hidden]="!showReport">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="h5 text-uppercase mb-1">
+                                                    <b>{{ 'memberReports.reportGenerated' | transloco }}</b>
+                                                </div>
+                                                
+                                                <div class="text-xs mb-0">
+                                                    {{ 'memberReports.generatedates' | transloco }} {{ startDate | date }} &asymp; {{ endDate | date }}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-auto" (click)="toggleContent()">
+                                                <i class="fa-solid fa-file-import fa-2xl"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row justify-content-between" [hidden]="!showReport">
+                                <div class="col-xl-3 col-md-6 col-sm-12 mb-4"> 
+                                  <div class="card shadow h-100 py-2">
+                                    <div class="card-body">
+                                      <div class="row no-gutters align-items-center">
+                                        <div class="col-11 mr-2">
+                                          <div class="text-xs text-center text-black text-uppercase mb-1"><b>{{ 'memberReports.totalmembers' | transloco }}</b></div>
+                                          <hr>
+                                          <div style="transform: translateX(5%);">
+                                            <p-knob  [(ngModel)]="total" [size]="200" [readonly]="true" valueColor="black"></p-knob>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="col-xl-3 col-md-6  col-sm-12 mb-4">
+                                    <div class="card shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-11  mr-2">
+                                                    <div class="text-xs text-center text-black text-uppercase mb-1"><b>{{ 'memberReports.totalmens' | transloco }}</b></div>
+                                                    <hr>
+                                                    <div style="transform: translateX(5%);">
+                                                        <p-knob [(ngModel)]="maleCount" [size]="200" [readonly]="true" valueColor="black"></p-knob>
+                                                    </div>
+                                                </div>
+                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-3 col-md-6  col-sm-12 mb-4">
+                                    <div class="card shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-11  mr-2">
+                                                    <div class="text-xs text-center text-black text-uppercase mb-1"><b>{{ 'memberReports.totalwomans' | transloco }}</b></div>
+                                                    <hr>
+                                                    <div style="transform: translateX(5%);">
+                                                    <p-knob [(ngModel)]="femaleCount" [size]="200" [readonly]="true" valueColor="black"></p-knob>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-xl-3 col-md-6  col-sm-12 mb-4">
+                                    <div class="card shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-11  mr-2">
+                                                    <div class="text-xs text-center text-black text-uppercase mb-1"><b>{{ 'memberReports.totalothers' | transloco }}</b></div>
+                                                    <hr>
+                                                    <div class="responsive" style="transform: translateX(5%);">
+                                                    <p-knob [(ngModel)]="otherCount" [size]="200" [readonly]="true" valueColor="black"></p-knob>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card" [hidden]="!showReport">
+                                <div class="card-body py-4">
+                                    <p-toolbar styleClass="mb-4 gap-2">
+                                        <ng-template pTemplate="left">
+                                            <button pButton pRipple label="{{ 'exportCSV' | transloco }}"
+                                                icon="pi pi-download" (click)="dt.exportCSV()" class="p-button-info"
+                                                pTooltip="CSV"></button>
+
+                                            &nbsp;
+
+                                            <button pButton pRipple label="{{ 'exportPdf' | transloco }}"
+                                                icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning"
+                                                pTooltip="PDF"></button>
+                                        </ng-template>
+                                    </p-toolbar>
+
+                                    <p-table #dt [columns]="cols" [value]="results" [paginator]="true" [rows]="10"
+                                        [rowHover]="true" [rowsPerPageOptions]="[10, 25, 50]"
+                                        [showCurrentPageReport]="true"
+                                        currentPageReportTemplate="{{ 'currentPageReportTemplate' | transloco }}">
+
+                                        <ng-template pTemplate="caption">
+                                            <div class="flex align-items-center justify-content-between">
+                                                <span class="p-input-icon-left">
+                                                    <i class="pi pi-search"></i>
+                                                    <input pInputText type="text"
+                                                        placeholder="{{ 'search' | transloco }}"
+                                                        (input)="dt.filterGlobal($any($event.target).value, 'contains')" />
+                                                </span>
+                                            </div>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr class="text-start text-muted fw-bolder fs-8 text-uppercase gs-0">
+                                                <th *ngFor="let col of columns" pSortableColumn="{{ col.field }}">
+                                                    {{ col.header }}
+                                                </th>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template class="text-gray-600 fw-bold" pTemplate="body" let-result
+                                            let-index="rowIndex">
+                                            <tr class="odd">
+                                                <td>{{ index + 1 }}</td>
+                                                <td>{{ result.name }}</td>
+                                                <td>{{ result.createdAt }}</td>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="summary">
+                                            <div class="flex align-items-center justify-content-between">{{
+                                                'totalRecords' | transloco }}: {{ results ? results.length : 0 }}</div>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-footer></app-footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

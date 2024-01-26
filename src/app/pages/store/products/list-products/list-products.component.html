@@ -1,0 +1,112 @@
+<div id="loader" *ngIf="loading"></div>
+
+<div id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed" style="--kt-toolbar-height: 55px; --kt-toolbar-height-tablet-and-mobile: 55px">
+    <div class="d-flex flex-column flex-root">
+        <div class="page d-flex flex-row flex-column-fluid">
+
+            <app-leftmenu></app-leftmenu>
+
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+
+                <app-nav></app-nav>
+
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="toolbar" id="kt_toolbar">
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                                    {{ 'products.manageProducts' | transloco }}
+                                </h1>
+
+                                <span class="h-20px border-gray-300 border-start mx-4"></span>
+
+                                <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                                    <li class="breadcrumb-item text-dark">{{ 'products.listProducts' | transloco }}</li>
+                                </ul>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                                <div class="m-0"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product d-flex flex-column-fluid" id="kt_product">
+                        <div id="kt_content_container" class="container-xxl">
+                            <div class="card">
+                                <div class="card-body py-4">
+                                    <p-toolbar styleClass="mb-4 gap-2">
+                                        <ng-template pTemplate="left">
+                                            <button pButton pRipple label="{{ 'addNew' | transloco }}" icon="pi pi-plus" class="p-button-success mr-2" routerLink="/store/products/new"></button>
+                                            &nbsp;&nbsp;
+                                            <button pButton pRipple icon="pi pi-trash" class="p-button-danger" disabled></button>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="right">
+                                            <button pButton pRipple label="{{ 'exportCSV' | transloco }}" icon="pi pi-download" (click)="dt.exportCSV()" class="p-button-info" pTooltip="CSV"></button>
+                                        </ng-template>
+                                    </p-toolbar>
+
+                                    <p-table #dt [columns]="cols" [value]="results" [paginator]="true" [rows]="10" [rowHover]="true" [rowsPerPageOptions]="[10, 25, 50]" [showCurrentPageReport]="true" currentPageReportTemplate="{{ 'currentPageReportTemplate' | transloco }}">
+                                        <ng-template pTemplate="caption">
+                                            <div class="flex align-items-center justify-content-between">
+                                                <span class="p-input-icon-left">
+                                                    <i class="pi pi-search"></i>
+                                                    <input pInputText type="text" placeholder="{{ 'search' | transloco }}" (input)="dt.filterGlobal($any($event.target).value, 'contains')" />
+                                                </span>
+                                            </div>
+                                        </ng-template>
+                                
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr class="text-start text-muted fw-bolder fs-8 text-uppercase gs-0">
+                                                <th style="width: 4rem">
+                                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                                </th>
+                                                <th *ngFor="let col of columns" pSortableColumn="{{ col.field }}">
+                                                    {{ col.header }}
+                                                </th>
+                                                <th>{{ 'actions' | transloco }}</th>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template class="text-gray-600 fw-bold" pTemplate="body" let-result let-index="rowIndex">
+                                            <tr class="odd">
+                                                <!-- <td>{{ index + 1 }}</td> -->
+                                                <td>
+                                                    <p-tableCheckbox [value]="result"></p-tableCheckbox>
+                                                </td>
+                                                <td>{{ result.name }}</td>
+                                                <!-- <td><img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/black-watch.jpg'" [alt]="result.name" width="50" class="shadow-4" /></td> -->
+                                                <td *ngIf="auth.hasRole(['SUPERADMIN'])">{{ result.tenant }}</td>
+                                                <td>{{ result.category }}</td>
+                                                <td>{{ result.subcategory }}</td>
+                                                <td>{{ result.unitType }}</td>
+                                                <td>{{ result.purchasePrice | currency: 'USD' }}</td>
+                                                <td>{{ result.salePrice | currency: 'USD' }}</td>
+                                                <td>{{ result.quantity }}</td>
+                                                <td>{{ result.reorderQuantity }}</td>
+                                                <td>{{ result.sku | truncate }}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-help mr-2" routerLink="/store/products/new/{{ result.id }}"></button>
+                                                        &nbsp;&nbsp;
+                                                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="confirmDelete(result)"></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="summary">
+                                            <div class="flex align-items-center justify-content-between">{{ 'totalRecords' | transloco }}: {{ results ? results.length : 0 }}</div>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-footer></app-footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

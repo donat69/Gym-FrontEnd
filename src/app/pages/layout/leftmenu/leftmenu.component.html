@@ -1,0 +1,150 @@
+<div class="aside aside-hoverable" style="background-color: white">
+
+	<div class="aside-logo flex-column-auto ">
+		<div class="menu-toggle burger-menu">
+			<div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px">
+				<span class="svg-icon svg-icon-1">
+				  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+					<path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black" />
+					<path opacity="0.3" d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z" />
+				  </svg>
+				</span>
+			  </div>
+		</div>
+		
+		<div class="menu overflow-auto" [ngClass]="{'active': isOpen}" [style.background-color]="crud.settings.colorTheme">
+			<div id="leftmenu">
+				<div class="menu-item" *ngIf="environment.demo == true">
+					<a [class]="route == '/video' ? 'menu-link active' : 'menu-link'" target="_blank" href="https://youtu.be/KpBc8J1KNhI">
+						<span class="menu-title"><i class="fa-solid fa-video"></i>&nbsp;&nbsp;Video Preview</span>
+					</a>
+
+					<hr style="color: white">
+				</div>
+
+				<div class="menu-item">
+					<a [class]="route == '/dashboard' ? 'menu-link active' : 'menu-link'" routerLink="/dashboard">
+						<span class="menu-title"><i class="fa-solid fa-chart-line"></i>&nbsp;&nbsp;{{ 'leftmenu.dashboard' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN'])">
+					<a [class]="route == '/licences' ? 'menu-link active' : 'menu-link'" routerLink="/licences/list">
+						<span class="menu-title"><i class="fa-solid fa-certificate"></i>&nbsp;&nbsp;{{ 'leftmenu.licences' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN'])">
+					<a [class]="route == '/owners' ? 'menu-link active' : 'menu-link'" routerLink="/owners/list">
+						<span class="menu-title"><i class="fa-sharp fa-solid fa-crown"></i>&nbsp;&nbsp;{{ 'leftmenu.owners' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN'])">
+					<a [class]="route == '/gyms' ? 'menu-link active' : 'menu-link'" routerLink="/gyms/list">
+						<span class="menu-title"><i class="fa-solid fa-dumbbell"></i>&nbsp;&nbsp;{{ 'leftmenu.gyms' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN'])">
+					<a [class]="route == '/users' ? 'menu-link active' : 'menu-link'" routerLink="/users/list">
+						<span class="menu-title"> <i
+								class="fa-solid fa-users-viewfinder"></i>&nbsp;&nbsp;{{ 'leftmenu.users' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+					<a [class]="route == '/members' ? 'menu-link active' : 'menu-link'" routerLink="/members/list">
+						<span class="menu-title"><i class="fa-solid fa-id-card"></i>&nbsp;&nbsp;{{ 'leftmenu.members' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['ADMIN'])">
+					<a [class]="route == '/memberships' ? 'menu-link active' : 'menu-link'"
+						routerLink="/memberships/list">
+						<span class="menu-title"><i class="fa-solid fa-user-group"></i>&nbsp;&nbsp;{{ 'leftmenu.memberships' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+					<a [class]="route == '/payments' ? 'menu-link active' : 'menu-link'" routerLink="/payments/list">
+						<span class="menu-title"><i class="fa-solid fa-sack-dollar"></i>&nbsp;&nbsp;{{ 'leftmenu.payments' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+					<a [class]="route == '/visits' ? 'menu-link active' : 'menu-link'" routerLink="/visits/list">
+						<span class="menu-title"><i class="fas fa-clock"></i>&nbsp;&nbsp;{{ 'leftmenu.visits' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+					<a [class]="route == '/realtime' ? 'menu-link active' : 'menu-link'" routerLink="/realtime">
+						<span class="menu-title"><i class="fa-solid fa-desktop"></i>&nbsp;&nbsp;{{ 'leftmenu.screenvisits' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+					<a [class]="route == '/pos' ? 'menu-link active' : 'menu-link'" routerLink="/pos">
+						<span class="menu-title"><i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;POS</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['ADMIN', 'STAFF'])">
+					<a class="menu-link" data-toggle="collapse" href="#storesMenu" role="button" aria-expanded="false" aria-controls="storesMenu">
+					  <span class="menu-title"><i class="fa-solid fa-store"></i>&nbsp;&nbsp;{{ 'leftmenu.store' | transloco }}</span>
+					  <i class="fas fa-chevron-down"></i>
+					</a>
+
+					<div class="collapse" id="storesMenu">
+					  <ul class="submenu"> 
+							<a *ngIf="auth.hasRole(['ADMIN', 'STAFF'])" class="m-1 d-flex" style="color: #bcc0c0;" [class]="route == '/store/categories/list' ? 'submenu-link active' : 'submenu-link'" routerLink="/store/categories/list">&nbsp;&nbsp; {{ 'leftmenu.Categories' | transloco }}</a>
+							
+							<a *ngIf="auth.hasRole(['ADMIN', 'STAFF'])" class="m-1 d-flex" style="color: #bcc0c0;" [class]="route == '/store/subcategories/list' ? 'submenu-link active' : 'submenu-link'" routerLink="/store/subcategories/list">&nbsp;&nbsp; {{ 'leftmenu.Subcategories' | transloco }}</a>
+
+							<a *ngIf="auth.hasRole(['ADMIN', 'STAFF'])" class="m-1 d-flex" style="color: #bcc0c0;" [class]="route == '/store/products/list' ? 'submenu-link active' : 'submenu-link'" routerLink="/store/products/list">&nbsp;&nbsp; {{ 'leftmenu.Products' | transloco }}</a>
+
+							<a *ngIf="auth.hasRole(['ADMIN'])" class="m-1 d-flex" style="color: #bcc0c0;" [class]="route == '/store/sales/list' ? 'submenu-link active' : 'submenu-link'" routerLink="/store/sales/list">&nbsp;&nbsp; {{ 'leftmenu.Sales' | transloco }}</a>
+					  </ul>
+					</div>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['ADMIN'])">
+					<a class="menu-link" data-toggle="collapse" href="#reportsMenu" role="button" aria-expanded="false" aria-controls="reportsMenu">
+					  <span class="menu-title"><i class="fas fa-fw fa-chart-bar"></i>&nbsp;&nbsp;{{ 'leftmenu.reports' | transloco }}</span>
+					  <i class="fas fa-chevron-down"></i>
+					</a>
+
+					<div class="collapse" id="reportsMenu">
+					  <ul class="submenu">
+						
+							<a class="m-1 d-flex " style="color: #bcc0c0;" [class]="route == '/reports/members' ? 'submenu-link active' : 'submenu-link'" routerLink="/reports/members">&nbsp;&nbsp;{{ 'leftmenu.members' | transloco }}</a>
+					
+							<a class="m-1 d-flex" style="color: #bcc0c0;" [class]="route == '/reports/payments' ? 'submenu-link active' : 'submenu-link'" routerLink="/reports/payments">&nbsp;&nbsp;{{ 'leftmenu.payments' | transloco }}</a>
+						
+					  </ul>
+					</div>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN', 'ADMIN'])">
+					<a [class]="route == '/emails' ? 'menu-link active' : 'menu-link'" routerLink="/emails">
+						<span class="menu-title"><i class="fa-sharp fa-solid fa-envelopes-bulk"></i>&nbsp;&nbsp;{{ 'leftmenu.messenger' | transloco }}</span>
+					</a>
+				</div>
+
+				<div class="menu-item" *ngIf="auth.hasRole(['SUPERADMIN'])">
+					<a [class]="route == '/settings' ? 'menu-link active' : 'menu-link'" routerLink="/settings">
+						<span class="menu-title"> <i 
+							class="fa-solid fa-gears"></i>&nbsp;&nbsp;{{ 'leftmenu.settings' | transloco }}</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<a routerLink="/dashboard">
+			<img *ngIf="crud.settings.showLogo" alt="Logo" src="../../../../assets/media/logos/logo.png" class="logo" style="height: 60px; width: 150px; margin-left: 30px;" />
+		</a>
+
+		<h3 *ngIf="!crud.settings.showLogo" class="title">{{ crud.settings.appName }}</h3>
+	</div>
+</div>

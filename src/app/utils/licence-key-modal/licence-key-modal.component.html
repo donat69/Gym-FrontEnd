@@ -1,0 +1,39 @@
+<div class="modal fade modalStyle" id="licenceKeyModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="licenceKeyModalTitle">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <form class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate [formGroup]="form" (ngSubmit)="submit()">
+            <div class="popup">
+                <img src="../../../assets/media/logos/incorrect.png">
+                <h2 class="text-uppercase">{{ 'modalLicence.licenceDeactivated' | transloco }}</h2>
+                <hr>
+                <p class="text-start">{{ 'modalLicence.noteSupport' | transloco }}</p>
+                <p class="text-start">
+                    <strong>{{ 'modalLicence.note' | transloco }}:&nbsp;</strong>
+                    {{ 'modalLicence.noteInfo' | transloco }}
+                </p>
+
+                <div class="modal-content">
+                    <h4 class="text-uppercase">{{ 'modalLicence.keyLicence' | transloco }}</h4>
+                    <input type="text" class="form-control" formControlName="keyLicence" name="keyLicence" />
+
+                    <div class="d-flex p-2 justify-content-center ">
+                        <button type="submit" class="btn btn-success" [disabled]="loading">
+                            <span *ngIf="!loading">{{ 'submit' | transloco }}</span>
+                            <span *ngIf="loading">{{ 'validating' | transloco }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="modal-content">
+                    <div class="text-uppercase d-flex justify-content-between">
+                        <a class="mr-auto p-2 link-dark" (click)="changeLang(selectedCountry === 'Spanish' ? 'en' : 'es')">
+                            {{ selectedCountry === 'Spanish' ? 'Cambiar idioma' : 'Change language' }}
+                        </a>
+                        <a class="p-2 link-danger" (click)="logout()">{{ 'nav.logout' | transloco }}</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

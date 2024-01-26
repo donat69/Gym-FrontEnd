@@ -1,0 +1,265 @@
+<div class="vh-100 backstyle overflow-hidden">
+  <div class="p-3 d-flex justify-content-between div-nav">
+    <h3 class="text-white">{{ 'pos.employee' | transloco }}: {{ this.auth.user.name }} </h3>
+
+    <div class="ml-0">
+      <a class="btn btn-danger text-uppercase" routerLink="/dashboard">
+        {{ 'pos.leave' | transloco }} <i class="fa-solid fa-sign-out"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="container-fluid overflow-hidden">
+    <div class="row">
+      <div class="col-lg-4 col-sm-6">
+        <div class="vh-detect d-flex flex-column">
+          <div class="mt-2">
+            <input type="text" class="form-control form-control-lg form-control-sm" [placeholder]="'pos.customers' | transloco" id="customers" name="customers" disabled />
+
+            <input type="text" class="form-control form-control-lg form-control-sm mt-2" [placeholder]="'pos.scan' | transloco" id="products" name="products" [(ngModel)]="searchQuery" (ngModelChange)="addProductFromSearch()" (keydown.enter)="searchQuery.length > 0 && addProductFromSearch()" />
+
+            <!-- <div class="matching-products" *ngIf="showMatchingProductList && matchingProducts.length > 0">
+              <ul>
+                <li *ngFor="let product of matchingProducts">
+                  <a (click)="addToCart(product)">{{ product.name }}</a>
+                </li>
+              </ul>
+            </div> -->
+          </div>
+
+          <p-divider />
+
+          <div class="table-responsive flex-grow-1">
+            <table class="table table-sm table-bordered table-striped table-hover">
+              <thead class="table-primary sticky-top">
+                <tr class="text-uppercase">
+                  <th scope="col">{{ 'pos.product' | transloco }}</th>
+                  <th scope="col">{{ 'pos.price' | transloco }}</th>
+                  <th scope="col">{{ 'pos.qty' | transloco }}</th>
+                  <!-- <th scope="col">{{ 'pos.subtotal' | transloco }}</th> -->
+                  <th scope="col" class="text-center"><i class="fa-solid fa-trash text-white"></i></th>
+                </tr>
+              </thead>
+
+              <tbody class="overflow-auto">
+                <tr *ngFor="let item of cart; let i = index">
+                  <td>{{ item.name | truncateProduct: 13 }}</td>
+                  <td>{{ item.salePrice | currency }}</td>
+                  <td>{{ cart[i].quantity }}</td>
+                  <!-- <td>
+                    <input class="text-center" style="width: 50px; line-height: 16px;" type="number"
+                      [(ngModel)]="cart[i].quantity">
+                  </td> -->
+                  <!-- <td>{{ item.subtotal | currency }}</td> -->
+                  <td class="text-center">
+                    <i class="fa-solid fa-trash text-dark" (click)="removeFromCart(i)"></i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p-divider />
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead class="table-dark sticky-top">
+                <tr class="text-uppercase text-center">
+                  <th scope="col">{{ 'pos.items' | transloco }}</th>
+                  <th scope="col">{{ 'pos.ordertax' | transloco }}</th>
+                  <th scope="col">{{ 'pos.discount' | transloco }}</th>
+                  <th scope="col">{{ 'pos.total' | transloco }}</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr class="text-center">
+                  <td><strong>{{ totalItems }} ({{ totalItems }}.00)</strong></td>
+                  <td><strong>{{ orderTax.toFixed(2) }} </strong></td>
+                  <td><strong>({{ totalDiscount.toFixed(2) }}) {{ totalDiscount.toFixed(2) }}</strong></td>
+                  <td><strong>{{ totalAmount.toFixed(2) | currency }}</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- <p-divider/> -->
+
+          <div class="d-flex justify-content-between thSec">
+            <div>
+              <span>{{ 'pos.totalpayable' | transloco }}</span>
+            </div>
+
+            <div>
+              <span><strong>{{ totalPayable.toFixed(2) | currency }}</strong></span>
+            </div>
+          </div>
+
+          <p-divider />
+
+          <div class="d-grid gap-2 mb-2">
+            <button class="btn btn-lg btn-sm btn-success" [disabled]="cart.length === 0" (click)="displayPaymentDialog = true">
+              {{ 'pos.paynow' | transloco }}
+            </button>
+
+            <button class="btn btn-lg btn-sm btn-danger" [disabled]="cart.length === 0" (click)="confirmCancel()">
+              {{ 'pos.cancel' | transloco }}
+            </button>
+
+            <!-- Confirmation Dialog -->
+            <p-confirmDialog [style]="{width: '35vw'}"></p-confirmDialog>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8 col-sm-6">
+        <div class="mt-2 vh-detect overflow-auto">
+          <div class="row m-2">
+            <ng-container *ngIf="showMatchingProductList && matchingProducts.length > 0; else elseBlock">
+              <div class="col-lg-3 col-md-6 mb-4" *ngFor="let product of matchingProducts">
+                <div class="card shadow" (click)="addToCart(product)">
+                  <div class="card-body">
+                    <h4 class="card-title text-center">{{ product.name | truncateProduct: 38 }}</h4>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #elseBlock>
+              <div class="col-lg-3 col-md-6 mb-4" *ngFor="let product of products">
+                <div class="card shadow" (click)="addToCart(product)">
+                  <div class="card-body">
+                    <h4 class="card-title text-center">{{ product.name | truncateProduct: 38 }}</h4>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Diálogo de pago -->
+<p-dialog [(visible)]="displayPaymentDialog" [modal]="true" [closable]="false" [draggable]="false" [style]="{ width: '40vw' }">
+  <ng-template pTemplate="header">
+    <h3>{{ 'pos.payment' | transloco }}</h3>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="text-center">
+      <h3>{{ 'pos.totalpayment' | transloco }}:</h3>
+      <h1 class="text-success">{{ totalPayable | currency }}</h1>
+      <!-- <p class="text-uppercase">({{ numberToWords(totalPayable) }})</p> -->
+    </div>
+
+    <p-divider></p-divider>
+
+    <!-- Selección de forma de pago con botones de opción -->
+    <div class="d-flex justify-content-between align-items-center">
+      <h3>{{ 'pos.paymentmethod' | transloco }}:</h3>
+
+      <!-- CASH -->
+      <div class="d-flex align-items-center">
+        <input type="radio" id="paymentMethodCash" [(ngModel)]="paymentMethod" [value]="'CASH'"
+          name="paymentMethod" (change)="onPaymentMethodChange()" />
+        <label for="paymentMethodCash">
+          &nbsp;
+          <span>{{ 'pos.cash' | transloco }}</span>
+          &nbsp;
+          <i class="pi pi-money-bill"></i>
+        </label>
+      </div>
+
+      <!-- CARD -->
+      <div class="d-flex align-items-center">
+        <input type="radio" id="paymentMethodCard" [(ngModel)]="paymentMethod" [value]="'CARD'" name="paymentMethod" (change)="onPaymentMethodChange()" />
+        <label for="paymentMethodCard">
+          &nbsp;
+          <span>{{ 'pos.card' | transloco }}</span>
+          &nbsp;
+          <i class="pi pi-credit-card"></i>
+        </label>
+      </div>
+
+      <!-- TRANSFER -->
+      <div class="d-flex align-items-center">
+        <input type="radio" id="paymentMethodTransfer" [(ngModel)]="paymentMethod" [value]="'TRANSFER'" name="paymentMethod" (change)="onPaymentMethodChange()" />
+        <label for="paymentMethodTransfer">
+          &nbsp;
+          <span>{{ 'pos.transfer' | transloco }}</span>
+          &nbsp;
+          <i class="pi pi-unlock"></i>
+        </label>
+      </div>
+    </div>
+
+    <!-- Campo de entrada para la referencia (se muestra solo para Tarjeta o Transferencia) -->
+    <div class="mt-3" *ngIf="paymentMethod === 'CARD' || paymentMethod === 'TRANSFER'">
+      <div class="form-group">
+        <label for="reference">{{ 'pos.ref' | transloco }}:</label>
+        <input type="text" class="form-control" id="reference" [(ngModel)]="reference" placeholder="Ex. 123456789" />
+      </div>
+    </div>
+
+    <!-- Campo para ingresar la cantidad en efectivo -->
+    <div class="mt-3" *ngIf="paymentMethod === 'CASH'">
+      <div class="form-group">
+        <label for="cashAmount">{{ 'pos.cantpayment' | transloco }}:</label>
+        <input type="number" class="form-control" id="cashAmount" [(ngModel)]="amountPaid"
+          (input)="calculateChange()" />
+      </div>
+
+      <!-- Mostrar el cambio calculado -->
+      <div class="text-center">
+        <p>{{ 'pos.change' | transloco }}: {{ changeDue | currency }}</p>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <div class="text-left">
+      <button type="button" class="btn btn-danger mr-2" (click)="closePaymentDialog()">{{ 'pos.cancel' | transloco }} <i class="pi pi-times"></i></button>
+
+      <button class="btn btn-success" [disabled]="loading || !isPaymentValid" (click)="performSale()">
+        <span *ngIf="!loading">{{ 'pos.makingsale' | transloco }} <i class="pi pi-check"></i></span>
+        <span *ngIf="loading">{{ 'pos.processingsale' | transloco }}</span>
+    </button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Ticket -->
+<p-dialog header="{{ 'pos.headerTicket' | transloco }}" [(visible)]="displayPurchaseReceipt" [modal]="true" [draggable]="false" [closable]="false" [responsive]="true">
+  <ng-template pTemplate="content">
+    <div #ticket>
+      <p>{{ 'pos.Invoice' | transloco }}: {{ detailsSale.folio }}</p>
+      <p-divider></p-divider>
+      <p-table [value]="detailsSale.products" [autoLayout]="true" class="custom-table">
+        <ng-template pTemplate="header">
+        <tr>
+          <th>{{ 'pos.product' | transloco }}</th>
+          <th>{{ 'pos.price' | transloco }}</th>
+          <th>{{ 'pos.qty' | transloco }}</th>
+          <!-- <th>{{ 'pos.subtotal' | transloco }}</th> -->
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-detail>
+        <tr>
+          <td>{{ detail.name }}</td>
+          <td>{{ detail.price | currency }}</td>
+          <td>{{ detail.quantity }}</td>
+          <!-- <td>{{ detail.subtotal }}</td> -->
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-divider></p-divider>
+    <p>{{ 'pos.dateSale' | transloco }}: {{ this.fun.transformDateTime(detailsSale.saleDate) }}</p>
+    <p>{{ 'pos.paymentmethod' | transloco }}: {{ detailsSale.paymentMethod }}</p>
+    <p>{{ 'pos.total' | transloco }}: {{ detailsSale.totalAmount | currency }}</p>
+  </div>
+  </ng-template>
+  <p-footer>
+    <button type="button" class="btn btn-danger" (click)="displayPurchaseReceipt = false">{{ 'close' | transloco }}</button>
+    <button type="button" class="btn btn-info" (click)="printTicket()">{{ 'print' | transloco }} <i class="pi pi-print"></i></button>
+  </p-footer>
+</p-dialog>

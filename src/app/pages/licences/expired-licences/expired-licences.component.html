@@ -1,0 +1,96 @@
+<div id="loader" *ngIf="loading"></div>
+
+<div id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed"
+    style="--kt-toolbar-height: 55px; --kt-toolbar-height-tablet-and-mobile: 55px">
+    <div class="d-flex flex-column flex-root">
+        <div class="page d-flex flex-row flex-column-fluid">
+            <app-leftmenu></app-leftmenu>
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <app-nav></app-nav>
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="toolbar" id="kt_toolbar">
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
+                                data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
+                                class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                                    {{ 'expiredLicences.manageExpiredLicences' | transloco }}
+                                </h1>
+                                <span class="h-20px border-gray-300 border-start mx-4"></span>
+                                <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                                    <li class="breadcrumb-item text-dark">{{ 'expiredLicences.listExpiredLicences' | transloco }}</li>
+                                </ul>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                                <div class="m-0"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="licence d-flex flex-column-fluid" id="kt_licence">
+                        <div id="kt_content_container" class="container-xxl">
+                            <div class="card">
+                                <div class="card-body py-4">
+                                    <p-toolbar styleClass="mb-4 gap-2">
+                                        <ng-template pTemplate="left">
+                                            <button pButton pRipple label="{{ 'deleteAll' | transloco }}" icon="pi pi-trash" class="p-button-danger mr-2" (click)="confirmDeleteAll()"></button>
+                                            &nbsp;&nbsp;
+                                            <button pButton pRipple label="{{ 'leftmenu.licences' | transloco }}" icon="fa-solid fa-certificate" class="p-button-warning mr-2" routerLink="/licences/list"></button>
+                                            &nbsp;&nbsp;
+                                            <button pButton pRipple label="{{ 'licences.typesLicences' | transloco }}" icon="fa-solid fa-bars" class="p-button-help mr-2" routerLink="/licences/types/list"></button>
+                                        </ng-template>
+                                        
+                                        <ng-template pTemplate="right">
+                                            <button class="float-right" pButton pRipple label="{{ 'exportCSV' | transloco }}" icon="pi pi-download" (click)="dt.exportCSV()" class="p-button-info" pTooltip="CSV"></button>
+                                        </ng-template>
+                                    </p-toolbar>
+
+                                    <p-table #dt [columns]="cols" [value]="results" [paginator]="true" [rows]="10" [rowHover]="true" [rowsPerPageOptions]="[10, 25, 50]" [showCurrentPageReport]="true" 
+                                        currentPageReportTemplate="{{ 'currentPageReportTemplate' | transloco }}">
+
+                                        <ng-template pTemplate="caption">
+                                            <div class="flex align-items-center justify-content-between">
+                                                <span class="p-input-icon-left">
+                                                    <i class="pi pi-search"></i>
+                                                    <input pInputText type="text" placeholder="{{ 'search' | transloco }}" (input)="dt.filterGlobal($any($event.target).value, 'contains')" />
+                                                </span>
+                                            </div>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr class="text-start text-muted fw-bolder fs-8 text-uppercase gs-0">
+                                                <th *ngFor="let col of columns" pSortableColumn="{{ col.field }}">
+                                                    {{ col.header }}
+                                                </th>
+                                                <th>{{ 'expiredLicences.renewPayment' | transloco }}</th>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template class="text-gray-600 fw-bold" pTemplate="body" let-result let-index="rowIndex">
+                                            <tr class="odd">
+                                                <td>{{ index + 1 }}</td>
+                                                <td>{{ result.gymName }}</td>
+                                                <td>{{ result.endDate }}</td>
+                                                <td>{{ result.licenceName }}</td>
+                                                <td>{{ result.licenceAmount | currency }}</td>
+                                                <td>
+                                                    <div class="btn-group" style="margin-left: 20%">
+                                                        <button pButton pRipple icon="pi pi-money-bill" class="p-button-rounded p-button-success mr-2" routerLink="/licences/new"></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="summary">
+                                            <div class="flex align-items-center justify-content-between">{{ 'totalRecords' | transloco }}: {{ results ? results.length : 0 }}</div>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-footer></app-footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,247 @@
+<div id="loader" *ngIf="loading"></div>
+
+<div id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed"
+    style="--kt-toolbar-height: 55px; --kt-toolbar-height-tablet-and-mobile: 55px">
+    <div class="d-flex flex-column flex-root">
+        <div class="page d-flex flex-row flex-column-fluid">
+            <app-leftmenu></app-leftmenu>
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <app-nav></app-nav>
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="toolbar" id="kt_toolbar">
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
+                                data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
+                                class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                                    {{ 'settings.settings' | transloco }}
+                                </h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="visit d-flex flex-column-fluid" id="kt_visit">
+                        <div id="kt_content_container" class="container-xxl">
+                            <div class="card">
+                                <div class="card-body py-4">
+                                    <p-tabView styleClass="tabview-custom">
+                                        <p-tabPanel>
+                                            <ng-template pTemplate="header">
+                                                <i class="fa-solid fa-gear"></i>
+                                                <span>&nbsp;&nbsp;{{ 'settings.general' | transloco }}</span>
+                                            </ng-template>
+
+                                            <p>{{ 'settings.noteGeneral' | transloco }}</p>
+
+                                            <form id="kt_account_profile_details_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate" [formGroup]="form" (submit)="submit()">
+                                                <div class="card-body border-top p-9">
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'settings.applicationName' | transloco }}</label>
+
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" class="form-control" formControlName="appName" name="appName" />
+                                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                                        <div *ngIf="form.controls.appName.touched && form.controls.appName.hasError('required')">
+                                                                            Application name is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-bold fs-6">{{ 'settings.email' | transloco }}</label>
+
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" class="form-control" formControlName="email" name="email" />
+                                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                                        <div *ngIf="form.controls.email.touched && form.controls.email.hasError('required')">
+                                                                            Email is required
+                                                                        </div>
+
+                                                                        <div *ngIf="form.controls.email.dirty && form.controls.email.errors">
+                                                                            Invalid Email
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-bold fs-6">{{ 'settings.phone' | transloco }}</label>
+        
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="number"
+                                                                        class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                        placeholder="Phone" formControlName="phone"
+                                                                        name="phone" />
+                                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                                        <div *ngIf="form.controls.phone.touched && form.controls.phone.hasError('required')">
+                                                                            Phone is required
+                                                                        </div>
+                                                                        
+                                                                        <div *ngIf="form.controls.phone.dirty && form.controls.phone.errors">
+                                                                            Invalid Phone
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label fw-bold fs-6">{{ 'settings.address' | transloco }}</label>
+
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                                    <input type="text" class="form-control" formControlName="address" name="address" />
+                                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                                        <div *ngIf="form.controls.address.touched && form.controls.address.hasError('required')">
+                                                                            Address is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'settings.showLogo' | transloco }}</label>
+
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                                    <p-selectButton [options]="stateOptions" formControlName="showLogo" name="showLogo" optionLabel="label" optionValue="value"></p-selectButton>
+                                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                                        <div *ngIf="form.controls.showLogo.touched && form.controls.showLogo.hasError('required')">
+                                                                            Show logo is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'settings.showFooter' | transloco }}</label>
+
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                                    <p-selectButton [options]="stateOptions" formControlName="showFooter" name="showFooter" optionLabel="label" optionValue="value"></p-selectButton>
+                                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                                        <div *ngIf="form.controls.showFooter.touched && form.controls.showFooter.hasError('required')">
+                                                                            Show footer is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!--div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Default language</label>
+
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                                    <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="language" name="language">
+                                                                        <option value="" disabled selected>Select a language</option>
+                                                                        <option value="en">English</option>
+                                                                        <option value="es">Spanish</option>
+                                                                    </select>
+                                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                                        <div *ngIf="form.controls.language.touched && form.controls.language.hasError('required')">
+                                                                            Language is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Currency</label>
+
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                                    <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="currency" name="currency">
+                                                                        <option value="" disabled selected>Select a currency</option>
+                                                                        <option value="USD">USD</option>
+                                                                    </select>
+                                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                                        <div *ngIf="form.controls.currency.touched && form.controls.currency.hasError('required')">
+                                                                            Currency is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div-->
+
+                                                    <div class="row mb-6">
+                                                        <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'settings.colorTheme' | transloco }}</label>
+
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                                    <p-colorPicker formControlName="colorTheme" name="colorTheme"></p-colorPicker>
+                                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                                        <div *ngIf="form.controls.email.touched && form.controls.email.hasError('required')">
+                                                                            Color theme is required
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                                    <button type="submit" class="btn btn-primary" [disabled]="loading">
+                                                        <span *ngIf="!loading">{{ 'save' | transloco }}</span>
+                                                        <span *ngIf="loading">{{ 'waiting' | transloco }}</span>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </p-tabPanel>
+
+                                        <p-tabPanel header="Header II">
+                                            <ng-template pTemplate="header">
+                                                <i class="fa-solid fa-code-compare"></i>
+                                                <span>&nbsp;&nbsp;{{ 'settings.version' | transloco }}</span>
+                                            </ng-template>
+                                            <p>
+                                                2.0.0 &mdash; Published on 10/13/2023
+                                            </p>
+                                        </p-tabPanel>
+
+                                        <!-- <p-tabPanel header="Header II">
+                                            <ng-template pTemplate="header">
+                                                <i class="fa-solid fa-cloud-arrow-down"></i>
+                                                <span>&nbsp;&nbsp;{{ 'settings.backup' | transloco }}</span>
+                                            </ng-template>
+                                            <p>
+                                                {{ 'soon' | transloco }}
+                                            </p>
+                                        </p-tabPanel> -->
+                                    </p-tabView>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-footer></app-footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

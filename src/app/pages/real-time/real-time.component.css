@@ -1,0 +1,72 @@
+* {
+    font-family: "Helvetica Neue", Hel "Times New Roman", "Arial";
+}
+
+.vh-detect {
+    height: calc(100vh - 60px) !important;
+  }
+
+.img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.navTime {
+    width: 100%;
+    padding: 2%;
+    background-color: rgb(234, 238, 234);
+    background: linear-gradient(to right, rgba(234, 238, 234, 1) 20%, rgba(255, 255, 255, 1) 100%);
+
+}
+
+  
+
+.livetrack {
+    margin: 0%;
+    background-color: rgb(234, 238, 234);
+    background: linear-gradient(to right, rgba(234, 238, 234, 1) 20%, rgba(255, 255, 255, 1) 100%);
+}
+
+.verifyInput {
+    border-radius: 5px;
+    border: none;
+    width: 300px;
+    padding: 10px;
+    font: 1.5rem/1.5rem;
+    border: 2px solid #000;
+
+}
+
+.footerColor {
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(234, 238, 234);
+    background: linear-gradient(to right, rgba(234, 238, 234, 1) 20%, rgba(255, 255, 255, 1) 100%);
+    padding: 70px;
+  }
+
+
+.table {
+    margin: 0 auto; /* Centrar la tabla horizontalmente */
+    max-width: 100%;
+    width: 50%;
+}
+
+.table th, .table td {
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .verifyInput {
+      margin-top: 700px;
+    }
+  }

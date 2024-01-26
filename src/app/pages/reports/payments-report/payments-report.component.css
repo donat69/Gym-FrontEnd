@@ -1,0 +1,16 @@
+.arrodown {
+    cursor: pointer;
+    justify-content: end;
+}
+
+.card1 {
+    border-left-width: 7px;
+    border-left-style: solid;
+    border-left-color: rgb(74, 182, 1);
+}
+
+.card2 {
+    border-bottom-width: 7px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(70, 70, 70);
+}

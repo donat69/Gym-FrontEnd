@@ -1,0 +1,147 @@
+@import "~ngx-toastr/toastr";
+@import "~primeicons/primeicons.css";
+@import "~primeng/resources/themes/lara-light-blue/theme.css";
+@import "~primeng/resources/primeng.min.css";
+
+.swal2-styled.swal2-confirm {
+  background-color: #0ab782 !important;
+}
+
+.vertical--center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.swal2-icon.swal2-error.swal2-icon-show,
+.swal2-icon.swal2-warning.swal2-icon-show {
+  margin: 12px auto;
+}
+
+h2#swal2-title {
+  font-size: 20px;
+}
+
+.card-toolbar {
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .fc-toolbar {
+    flex-direction: column-reverse !important;
+  }
+}
+
+
+
+ #loader {
+  z-index: 1;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  top: 400px;
+  left: 50%;
+  margin-left: -25px;
+  animation-name: spinner 0.4s linear infinite;
+  -webkit-animation: spinner 0.4s linear infinite;
+  -moz-animation: spinner 0.4s linear infinite;
+} 
+
+/* #loader:before {
+  position: absolute;
+  content: "";
+  display: block;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 80px;
+  height: 80px;
+  border-radius: 80px;
+  top: -15px;
+  left: -15px;
+}
+
+#loader:after {
+  position: absolute;
+  content: "";
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+  border-left: 2px solid white;
+  border-right: 2px solid transparent;
+  top: -2px;
+  left: -2px;
+} */
+ 
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@-moz-keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fv-plugins-message-container div {
+  color: red;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(73, 72, 72, 0.61);
+}
+
+.title {
+  margin: auto;
+  font-size: 30px;
+  text-align: center;
+}
+
+.auth-bg {
+  background: url("assets/media/backgrounds/auth-bg.jpg");
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+}
+
+.header_note {
+  position: initial;
+  background-color: #ffc107;
+  color: #333;
+  padding: 10px;
+  width: 100%;
+}
+
+.header__message {
+  font-weight: bold;
+}

@@ -1,0 +1,7 @@
+input[type="number"] {
+    outline: none;
+}
+
+.required-marker {
+    color: red;
+}

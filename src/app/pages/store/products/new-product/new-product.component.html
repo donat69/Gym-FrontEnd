@@ -1,0 +1,259 @@
+<div id="loader" *ngIf="loading"></div>
+
+<div id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed" style="--kt-toolbar-height: 55px; --kt-toolbar-height-tablet-and-mobile: 55px">
+    <div class="d-flex flex-column flex-root">
+        <div class="page d-flex flex-row flex-column-fluid">
+
+            <app-leftmenu></app-leftmenu>
+
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                
+                <app-nav></app-nav>
+
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="toolbar" id="kt_toolbar">
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                                    {{ 'products.manageProducts' | transloco }}
+                                </h1>
+
+                                <span class="h-20px border-gray-300 border-start mx-4"></span>
+
+                                <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                                    <li class="breadcrumb-item text-dark" *ngIf="!loading">
+                                        <span *ngIf="product.id">{{ 'products.updateProduct' | transloco }}</span>
+                                        <span *ngIf="!product.id">{{ 'products.addProduct' | transloco }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product d-flex flex-column-fluid" id="kt_product">
+                        <div id="kt_content_container" class="container-xxl">
+                            <div class="card mb-5 mb-xl-10">
+                                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
+                                    <div class="card-title m-0">
+                                        <h3 class="fw-bolder m-0">
+                                            <span *ngIf="product.id">{{ 'products.updateProduct' | transloco }}</span>
+                                            <span *ngIf="!product.id">{{ 'products.addProduct' | transloco }}</span>
+                                        </h3>
+                                    </div>
+                                </div>
+
+                                <div id="kt_account_settings_profile_details" class="collapse show">
+                                    <form id="kt_account_profile_details_form" class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate" [formGroup]="form" (submit)="submit()">
+                                        <div class="card-body border-top p-9">
+                                            <div class="row mb-6" *ngIf="auth.hasRole(['SUPERADMIN'])">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="tenantId">{{ 'posform.gym' | transloco }}</label>
+                                            
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="tenantId" name="tenantId" id="tenantId" (change)="onGymSelectionChange()">
+                                                                <option value="" disabled selected>{{ 'posform.selectgym' | transloco }}</option>
+                                                                <option *ngFor="let gym of gyms" [value]="gym.id">{{ gym.name }}</option>
+                                                            </select>
+
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.tenantId.touched && form.controls.tenantId.hasError('required')">
+                                                                    Gym is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="name">{{ 'posform.name' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="{{ 'posform.name' | transloco }}" formControlName="name" name="name" id="name" autocomplete="name" />
+                                                            
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.name.touched && form.controls.name.hasError('required')">
+                                                                    Name is required
+                                                                </div>
+
+                                                                <div *ngIf="form.controls.name.dirty && form.controls.name.errors">
+                                                                    Invalid Name
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                            
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="categoryId">{{ 'posform.category' | transloco }}</label>
+                                            
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="categoryId" name="categoryId" id="categoryId">
+                                                                <option value="" disabled selected>{{ 'posform.selectcategory' | transloco }}</option>
+                                                                <option *ngFor="let category of filteredCategories" [value]="category.id">{{ category.name }}</option>
+                                                            </select>
+
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.categoryId.touched && form.controls.categoryId.hasError('required')">
+                                                                    Category is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="subcategoryId">{{ 'posform.subcategory' | transloco }}</label>
+                                            
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="subcategoryId" name="subcategoryId" id="subcategoryId">
+                                                                <option value="" disabled selected>{{ 'posform.selectsubcategory' | transloco }}</option>
+                                                                <option *ngFor="let subcategory of filteredSubcategories" [value]="subcategory.id">{{ subcategory.name }}</option>
+                                                            </select>
+
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.subcategoryId.touched && form.controls.subcategoryId.hasError('required')">
+                                                                    Subcategory is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="unitType">{{ 'posform.UnitType' | transloco }}</label>
+                                            
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="unitType" name="unitType" id="unitType">
+                                                                <option value="" disabled selected>{{ 'posform.selectunittype' | transloco }}</option>
+                                                                <option value="KG">KG</option>
+                                                                <option value="LTR">LTR</option>
+                                                                <option value="UNIT">UNIT</option>
+                                                            </select>
+
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.unitType.touched && form.controls.unitType.hasError('required')">
+                                                                    Unit Type is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="purchasePrice">{{ 'posform.PurchasePrice' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <input type="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" formControlName="purchasePrice" name="purchasePrice" id="purchasePrice" />
+                                                    </div>
+
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        <div *ngIf="form.controls.purchasePrice.touched && form.controls.purchasePrice.hasError('required')">
+                                                            Purchase Price is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="salePrice">{{ 'posform.SalePrice' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <input type="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" formControlName="salePrice" name="salePrice" id="salePrice" />
+                                                    </div>
+
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        <div *ngIf="form.controls.salePrice.touched && form.controls.salePrice.hasError('required')">
+                                                            Sale Price is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="quantity">{{ 'posform.Quantity' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="input-group">
+                                                        <input type="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" formControlName="quantity" name="quantity" id="quantity" />
+                                                    </div>
+
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        <div *ngIf="form.controls.quantity.touched && form.controls.quantity.hasError('required')">
+                                                            Quantity is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="reorderQuantity">{{ 'posform.ReorderQuantity' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="input-group">
+                                                        <input type="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" formControlName="reorderQuantity" name="reorderQuantity" id="reorderQuantity" />
+                                                    </div>
+
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        <div *ngIf="form.controls.reorderQuantity.touched && form.controls.reorderQuantity.hasError('required')">
+                                                            Reorder Quantity is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="sku">{{ 'posform.SKU' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" formControlName="sku" name="sku" id="sku" />
+                                                    </div>
+
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        <div *ngIf="form.controls.sku.touched && form.controls.sku.hasError('required')">
+                                                            SKU is required
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                            <button routerLink="/store/products/list" type="button" class="btn btn-dark">
+                                                {{ 'discard' | transloco }}
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button type="submit" class="btn btn-primary" [disabled]="loading">
+                                                <span *ngIf="!loading">{{ 'submit' | transloco }}</span>
+                                                <span *ngIf="loading">{{ 'waiting' | transloco }}</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-footer></app-footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

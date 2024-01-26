@@ -1,0 +1,367 @@
+<div id="loader" *ngIf="loading"></div>
+
+<div class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed"
+  style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
+  <div class="d-flex flex-column flex-root">
+    <div class="page d-flex flex-row flex-column-fluid">
+      <app-leftmenu></app-leftmenu>
+      <div class="wrapper d-flex flex-column flex-row-fluid">
+        <app-nav></app-nav>
+        <app-licence-key-modal></app-licence-key-modal>
+        <div class="content d-flex flex-column flex-column-fluid">
+          <div class="toolbar">
+            <div class="container-fluid d-flex flex-stack">
+              <div class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                  {{ 'leftmenu.dashboard' | transloco }}
+                </h1>
+              </div>
+              <div class="d-flex align-items-center gap-2 gap-lg-3">
+                <div class="m-0">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="post d-flex flex-column-fluid">
+            <div class="container-xxl">
+              <div class="col-xxl-12 mb-lg-12 mb-xl-12 mb-xxl-12" *ngIf="auth.hasRole(['SUPERADMIN'])">
+                <div class="row g-5 g-lg-10">
+                  <div class="row p-5">
+                    <!-- <div class="d-flex justify-content-between" style="width: 98%; ">
+                      <h2>{{ 'dashboard.hello' | transloco }}, {{ auth.user?.name.split(" ")[0] }}</h2>
+                    </div> -->
+
+                    <!-- Earnings (Monthly) Card -->
+                    <div class="col-xl-3 col-md-6 mb-4 ">
+                      <div class="card shadow h-100 py-2 card1">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs text-primary text-uppercase mb-1"><b>{{ 'dashboard.totalSales' |
+                                  transloco }}</b></div>
+                              <div class="h5 mb-0 text-gray-800">{{ totalSales | currency }}</div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-money-bill-alt fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card shadow h-100 py-2 card2">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs text-success text-uppercase mb-1"><b>{{ 'dashboard.gyms' | transloco
+                                  }}</b></div>
+                              <div class="h5 mb-0 text-gray-800">{{ gymCount }}</div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fa-solid fa-dumbbell fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card shadow h-100 py-2 card3">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs text-info text-uppercase mb-1"><b>{{ 'dashboard.owners' | transloco
+                                  }}</b></div>
+                              <div class="h5 mb-0 text-gray-800">{{ ownerCount }}</div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fa-sharp fa-solid fa-crown fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Pending Requests Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card shadow h-100 py-2 card4">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs text-warning text-uppercase mb-1"><b>{{
+                                  getFormattedDateTime().date}}</b></div>
+                              <div style="font-size: 85%;" class="mb-0 text-gray-800">{{ getFormattedDateTime().time }}
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Sales chart for SUPERADMIN -->
+                    <div class="col-xl-6 col-md-6 mb-4">
+                      <div class="card shadow h-100 ">
+                        <div class="card-body p-4">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs text-center text-info text-uppercase mb-1">&mdash;{{
+                                'dashboard.salesandgyms' | transloco }}&mdash;</div>
+                              <div class="h5 mb-0 text-gray-800 m-4"><p-chart type="bar" [data]="dataSP"
+                                  [options]="optionSP"></p-chart>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Clients charts -->
+                    <div class="col-xl-6 col-md-6 mb-4">
+                      <div class="card shadow h-100">
+                        <div class="card-body p-4">
+                          <div class="row no-gutters align-items-center">
+                            <div class="text-xs text-info text-center text-uppercase mb-5">&mdash;{{ 'dashboard.clients'
+                              | transloco }}&mdash;</div>
+                            <div class=" text-gray-800 text-center d-flex justify-content-center ">
+                              <p-chart type="pie" [data]="datoSPA" [options]="optionsSPA"
+                                style="height: 350px; width: 350px;"></p-chart>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Calendar -->
+                    <div class="col-xl-12 col-md-12 mb-4">
+                      <div class="card shadow h-100 p-5">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div>
+                                <app-calendar></app-calendar>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xxl-12 mb-lg-12 mb-xl-12 mb-xxl-12" *ngIf="auth.hasRole(['ADMIN'])">
+                <div class="row g-5 g-lg-10">
+                  <div class="d-flex justify-content-between" style="width: 98%; ">
+                    <!-- <h2>{{ 'dashboard.hello' | transloco }}, {{ auth.user?.name.split(" ")[0] }}</h2> -->
+                    <h3 class="text-gray-400" *ngIf="auth.hasRole(['ADMIN'])">{{ 'dashboard.dueDate' | transloco }}: {{
+                      licenceExpirationDate | date: 'dd/MM/yy' }}</h3>
+                  </div>
+                  <div class="row p-5">
+                    <!-- Earnings (Monthly) Card -->
+                    <div class="col-xl-3 col-md-6 mb-4 ">
+                      <div class="card shadow h-100 py-2 card1">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs text-primary text-uppercase mb-1"><b>{{ 'dashboard.earningsMonthly' |
+                                  transloco }}</b></div>
+                              <div class="h5 mb-0 text-gray-800">{{ monthlyEarnings | currency }}</div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-money-bill-alt fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card shadow h-100 py-2 card6">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs text-uppercase mb-1" style="color: #d9342b"><b>{{ 'dashboard.members'
+                                  |
+                                  transloco }}</b></div>
+                              <div class="h5 mb-0 text-gray-800">{{ memberCount }}</div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-list fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Earnings (Monthly) Card -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card shadow h-100 py-2 card5">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs text-uppercase mb-1" style="color: #f97316"><b>{{
+                                  'dashboard.joinedMonthly' |
+                                  transloco }}</b></div>
+                              <div class="h5 mb-0 text-gray-800">{{ membersJoinedThisMonth }}</div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-link fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Pending Requests Card Example -->
+                    <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="card shadow h-100 py-2 card4">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs text-warning text-uppercase mb-1"><b>{{ getFormattedDateTime().date
+                                  }}</b></div>
+                              <div class=" mb-0 text-gray-800">{{ getFormattedDateTime().time }}</div>
+                            </div>
+                            <div class="col-auto">
+                              <i class="fas fa-calendar-alt fa-2x text-gray-300"></i>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Members chart -->
+                    <div class="col-xl-6 col-md-6 mb-4">
+                      <div class="card shadow h-100">
+                        <div class="card-body p-4">
+                          <div class="row no-gutters align-items-center">
+                            <div class="text-xs text-info text-center text-uppercase mb-5">&mdash;{{ 'dashboard.members'
+                              | transloco }}&mdash;</div>
+                            <div class=" text-gray-800 text-center d-flex justify-content-center ">
+                              <p-chart type="doughnut" [data]="data" style="height: 390px; width: 390px;"></p-chart>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Sales chart  -->
+                    <div class="col-xl-6 col-md-6 mb-4">
+                      <div class="card shadow h-100 ">
+                        <div class="card-body p-4">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div class="text-xs text-center text-info text-uppercase mb-1">&mdash;{{
+                                'dashboard.dailyVisits' | transloco }}&mdash;</div>
+                              <div class="h5 mb-0 text-gray-800 m-4"><p-chart type="line" [data]="dato"
+                                  [options]="opcion"></p-chart></div>
+                              <a class="btn btn-primary" style="margin: 10px;" data-bs-toggle="modal"
+                                href="#exampleModalToggle" role="button">{{ 'dashboard.showMore' | transloco }}</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Calendar -->
+                    <div class="col-xl-12 col-md-12 mb-4">
+                      <div class="card shadow h-100 p-5">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div>
+                                <app-calendar></app-calendar>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xxl-12 mb-lg-12 mb-xl-12 mb-xxl-12" *ngIf="auth.hasRole(['STAFF'])">
+                <div class="row g-5 g-lg-10">
+                  <div class="d-flex justify-content-between" style="width: 98%; ">
+                    <!-- <h2>{{ 'dashboard.hello' | transloco }}, {{ auth.user?.name.split(" ")[0] }}</h2> -->
+                  </div>
+
+                  <div class="row p-5">
+
+                    <!-- Calendar -->
+                    <div class="col-xl-12 col-md-12 mb-4">
+                      <div class="card shadow h-100 p-5">
+                        <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                              <div>
+                                <app-calendar></app-calendar>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModalToggle" aria-hidden="true"
+                aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                <div class="modal-dialog modal-xl modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalToggleLabel">{{ 'dashboard.dailyVisits' | transloco }}
+                      </h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <div style="border-color: white;" class="table-responsive"
+                        style="max-height: 500px; overflow-y: scroll;">
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th scope="col"><b>{{ 'dashboard.keyMember' | transloco }}</b></th>
+                              <th scope="col"><b>{{ 'dashboard.memberName' | transloco }}</b></th>
+                              <th scope="col"><b>{{ 'dashboard.dateVisit' | transloco }}</b></th>
+                              <th scope="col"><b>{{ 'dashboard.visualization' | transloco }}</b></th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            <ng-container *ngIf="visits && visits.length > 0">
+                              <tr class="odd" *ngFor="let visit of visits.slice(0, 15)">
+                                <td>{{ visit.memberKey }}</td>
+                                <td>{{ visit.memberName }}</td>
+                                <td>{{ visit.visitDate }}</td>
+                                <td>
+                                  <a data-bs-dismiss="modal" aria-label="Close"
+                                    routerLink="/members/new/{{ visit.memberId }}"><i
+                                      class="fa-solid fa-eye text-dark"></i></a>
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <app-footer></app-footer>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

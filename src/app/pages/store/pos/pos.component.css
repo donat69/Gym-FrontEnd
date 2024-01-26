@@ -1,0 +1,161 @@
+.backstyle {
+  background-image: url(../../../../assets/media/backgrounds/scattered-forcefields.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+  /* height: 100vh; */
+}
+
+.div-nav {
+  /* position: fixed; */
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-size: 30px;
+  background-color: black;
+  padding: 10px 20px;
+  z-index: 99999;
+}
+
+/* .div-venta {
+  margin-top: 2%;
+  background-color: #ececec;
+  padding: 2%;
+  max-height: 700px;
+} */
+
+/* .h-sell {
+  padding: 10px;
+  overflow-y: auto;
+  max-height: 670px;
+} */
+
+/* .div-stock {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  # Cambia 'align-items' a 'stretch'
+  padding: 5px;
+  margin-top: 1%;
+} */
+
+/* .designTable {
+  border: 2px solid #000000;
+  z-index: 9999;
+} */
+
+/* table {
+  width: 100%;
+  border-collapse: collapse;
+} */
+
+/* th {
+  background-color: #428bCA;
+  padding: 8px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 1px solid #474747;
+  color: #ffffff;
+  border: none solid;
+  position: sticky;
+  top: 0;
+} */
+
+.card {
+  height: 12vh;
+}
+
+.card:hover {
+  cursor: pointer;
+  background-color: #428bca;
+  color: white;
+}
+
+.thSec {
+  background-color: rgb(50, 64, 90);
+  border-collapse: collapse;
+  color: white;
+  padding: 10px;
+  font-size: 15px;
+}
+
+.custom-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.custom-table th,
+.custom-table td {
+  border: none;
+  padding: 8px;
+  text-align: left;
+}
+
+
+/* td {
+  border: 1px solid #474747;
+  padding: 8px;
+} */
+
+/* .table-container {
+  flex-grow: 1;
+  overflow-y: auto;
+} */
+
+.vh-detect {
+  height: calc(100vh - 60px) !important;
+}
+
+/* div.flex-fill { */
+div.flex-grow-1 {
+  max-height: 472px;
+}
+
+/* .btn-group {
+  align-self: center;
+  margin-top: 10px;
+} */
+
+@media (max-width: 1280px) and (max-height: 720px) {
+  div.flex-grow-1 {
+    max-height: 110px;
+  }
+}
+
+@media (max-width: 1366px) {
+  div.flex-grow-1 {
+    max-height: 110px;
+  }
+}
+
+@media (max-width: 770px) {
+  vh-detect {
+    height: auto;
+  }
+}
+
+/*  .div-venta {
+    margin-top: 2%;
+    background-color: #ececec;
+    padding: 2%;
+    max-height: 625px;
+  }
+
+  .h-sell {
+    padding: 10px;
+    overflow-y: auto;
+    max-height: 570px;
+  }
+} */

@@ -1,0 +1,263 @@
+<div id="loader" *ngIf="loading"></div>
+
+<div id="kt_body"
+    class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed"
+    style="--kt-toolbar-height: 55px; --kt-toolbar-height-tablet-and-mobile: 55px">
+    <div class="d-flex flex-column flex-root">
+        <div class="page d-flex flex-row flex-column-fluid">
+            <app-leftmenu></app-leftmenu>
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <app-nav></app-nav>
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="toolbar" id="kt_toolbar">
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
+                                data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
+                                class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                                    {{ 'members.manageMembers' | transloco }}
+                                </h1>
+                                <span class="h-20px border-gray-300 border-start mx-4"></span>
+                                <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                                    <li class="breadcrumb-item text-dark">{{ 'members.listMembers' | transloco }}</li>
+                                </ul>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 gap-lg-3">
+                                <div class="m-0"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="membership d-flex flex-column-fluid" id="kt_membership">
+                        <div id="kt_content_container" class="container-xxl">
+                            <div class="card">
+                                <div class="card-body py-4">
+                                    <p-toolbar styleClass="mb-4 gap-2">
+                                        <ng-template pTemplate="left">
+                                            <button pButton pRipple label="{{ 'addNew' | transloco }}" icon="pi pi-plus" class="p-button-success mr-2"
+                                            routerLink="/members/new"></button>
+                                            &nbsp;&nbsp;
+                                            <button pButton pRipple label="{{ 'members.expiredMembers' | transloco }}"
+                                            icon="fa-solid fa-user-minus" class="p-button-danger mr-2"
+                                            routerLink="/members/expired"></button>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="right">
+                                            <button pButton pRipple label="{{ 'exportCSV' | transloco }}"
+                                                icon="pi pi-download" (click)="dt.exportCSV()" class="p-button-info"
+                                                pTooltip="CSV"></button>        
+                                           </ng-template>
+                                    </p-toolbar>
+
+
+
+
+
+                                    <p-table #dt [columns]="cols" [value]="results" [paginator]="true" [rows]="10"
+                                        [rowHover]="true" [rowsPerPageOptions]="[10, 25, 50]"
+                                        [showCurrentPageReport]="true"
+                                        currentPageReportTemplate="{{ 'currentPageReportTemplate' | transloco }}">
+
+                                        <ng-template pTemplate="caption">
+                                            <div class="flex align-items-center justify-content-between">
+                                                <span class="p-input-icon-left">
+                                                    <i class="pi pi-search"></i>
+                                                    <input pInputText type="text"
+                                                        placeholder="{{ 'search' | transloco }}"
+                                                        (input)="dt.filterGlobal($any($event.target).value, 'contains')" />
+                                                </span>
+                                            </div>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="header" let-columns>
+                                            <tr class="text-start text-muted fw-bolder fs-8 text-uppercase gs-0">
+                                                <th *ngFor="let col of columns" pSortableColumn="{{ col.field }}">
+                                                    {{ col.header }}
+                                                </th>
+                                                <th>{{ 'actions' | transloco }}</th>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template class="text-gray-600 fw-bold" pTemplate="body" let-result
+                                            let-index="rowIndex">
+                                            <tr class="odd">
+                                                <td>{{ index + 1 }}</td>
+                                                <td>{{ result.name }}</td>
+                                                <td>{{ result.email }}</td>
+                                                <td>{{ result.phone }}</td>
+                                                <td>{{ result.address }}</td>
+                                                <td>{{ result.birthDate }}</td>
+                                                <td>{{ result.gender }}</td>
+                                                <td>{{ result.observations }}</td>
+                                                <td>{{ result.createdBy }}</td>
+                                                <td>{{ result.gymName }}</td>
+                                                <td>{{ result.createdAt }}</td>
+                                                <td>{{ result.updatedAt }}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button pButton pRipple icon="pi pi-eye"
+                                                            class="p-button-rounded p-button-primary mr-2"
+                                                            (click)="switchModal(result)" data-bs-toggle="modal"
+                                                            href="#exampleModalToggle" role="button"></button>
+                                                        &nbsp;&nbsp;
+                                                        <button pButton pRipple icon="pi pi-pencil"
+                                                            class="p-button-rounded p-button-help mr-2"
+                                                            routerLink="/members/new/{{ result.id }}"></button>
+                                                        &nbsp;&nbsp;
+                                                        <button pButton pRipple icon="pi pi-trash"
+                                                            class="p-button-rounded p-button-danger"
+                                                            (click)="confirmDelete(result)"></button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+
+                                        <ng-template pTemplate="summary">
+                                            <div class="flex align-items-center justify-content-between">{{
+                                                'totalRecords' | transloco }}: {{ results ? results.length : 0 }}</div>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-footer></app-footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel">{{ 'information' | transloco }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div *ngFor="let member of members">
+                    <div class="histroy-card-image rounded-0">
+                        <img [src]="urlMember" alt="" class="imagen" *ngIf="urlMember; else nvMember">
+
+                        <ng-template #nvMember>
+                            <h3 class="text-center text-danger text-uppercase">{{
+                                'modalMembers.memberWithoutImage' | transloco }}</h3>
+                        </ng-template>
+                    </div>
+
+                    <div class="d-flex justify-content-center mt-3">
+                        <div class="card mb-3 rounded-0">
+                            <div class="row no-gutters">
+                                <div class="card-body p-0">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div><i class="fas fa-user fa-sm"></i>
+                                                        <span class="m-3">{{ 'modalMembers.memberName' | transloco
+                                                            }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span class="text-left texto">{{ member?.name }}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div><i class="fas fa-envelope fa-sm"></i>
+                                                        <span class="m-3">{{ 'modalMembers.memberEmail' | transloco
+                                                            }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span class="text-left texto">{{ member?.email }}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div><i class="fas fa-phone-alt fa-sm"></i>
+                                                        <span class="m-3">{{ 'modalMembers.memberPhone' | transloco
+                                                            }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span class="text-left texto">{{ member?.phone }}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div><i class="fa-solid fa-location-dot"></i>
+                                                        <span class="m-3">{{ 'modalMembers.memberAddress' |
+                                                            transloco }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span class="text-left texto">{{ member?.address }}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="list-group-item">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <div><i class="fas fa-mars"></i>
+                                                        <span class="m-3">{{ 'modalMembers.memberGender' | transloco
+                                                            }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <span class="text-left texto">{{ member?.gender }}</span>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">{{ 'modalMembers.showQR' | transloco }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalToggleLabel2">{{ 'modalMembers.codeQR' | transloco }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div *ngFor="let member of members">
+                    <div class="histroy-card-image rounded-0" style="display: flex; justify-content: center;">
+                        <qrcode elementType="img" (qrCodeURL)="onCodeChange($event)" [width]="400" [qrdata]="member.key"
+                            [errorCorrectionLevel]="'H'"></qrcode>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-primary" disabled>{{ 'sendForEmail' | transloco }}</button>
+                <button class="btn btn-success" disabled>{{ 'sendForWhatsApp' | transloco }} <i class="fab fa-whatsapp"></i></button>
+                <button class="btn btn-info"  disabled>{{ 'print' | transloco }}</button>
+            </div> 
+        </div>
+    </div>
+</div>

@@ -1,0 +1,340 @@
+<div id="loader" *ngIf="loading"></div>
+<link rel="stylesheet" href="new-member.component.css">
+<div id="kt_body"
+    class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed"
+    style="--kt-toolbar-height: 55px; --kt-toolbar-height-tablet-and-mobile: 55px">
+    <div class="d-flex flex-column flex-root">
+        <div class="page d-flex flex-row flex-column-fluid">
+            <app-leftmenu></app-leftmenu>
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <app-nav></app-nav>
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="toolbar" id="kt_toolbar">
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
+                                data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
+                                class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                                    {{ 'members.manageMembers' | transloco }}
+                                </h1>
+                                <span class="h-20px border-gray-300 border-start mx-4"></span>
+                                <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                                    <li class="breadcrumb-item text-dark" *ngIf="!loading">
+                                        <span *ngIf="member.id">{{ 'members.updateMember' | transloco }}</span>
+                                        <span *ngIf="!member.id">{{ 'members.addMember' | transloco }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="member d-flex flex-column-fluid" id="kt_member">
+                        <div id="kt_content_container" class="container-xxl">
+                            <div class="card mb-5 mb-xl-10">
+                                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                                    data-bs-target="#kt_account_profile_details" aria-expanded="true"
+                                    aria-controls="kt_account_profile_details">
+                                    <div class="card-title m-0">
+                                        <h3 class="fw-bolder m-0">
+                                            <span *ngIf="member.id">{{ 'members.updateMember' | transloco }}</span>
+                                            <span *ngIf="!member.id">{{ 'members.addMember' | transloco }}</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div id="kt_account_settings_profile_details" class="collapse show">
+                                    <form id="kt_account_profile_details_form"
+                                        class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate"
+                                        [formGroup]="form" (submit)="submit()">
+                                        <div class="card-body border-top p-9">
+                                            <div class="card">
+                                                <p-messages [(value)]="messages" [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'500ms'" [enableService]="false"></p-messages>
+                                            </div>
+                                            
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'form.name' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="text"
+                                                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                [placeholder]="'members.name' | transloco" formControlName="name"
+                                                                name="name" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.name.touched && form.controls.name.hasError('required')">
+                                                                    Name is required
+                                                                </div>
+
+                                                                <div *ngIf="form.controls.name.dirty && form.controls.name.errors">
+                                                                    Invalid Name
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label fw-bold fs-6">{{ 'form.key' | transloco }}</label>
+                                              
+                                                <div class="col-lg-8">
+                                                  <div class="row">
+                                                    <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                      <button class="btn btn-secondary" *ngIf="!showInput" (click)="toggleInput()">{{ 'members.enableRFID' | transloco }}</button>
+                                                      <input *ngIf="showInput" type="text" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" placeholder="Key" formControlName="key" name="key" maxlength="10" (input)="updateKey($event)" />
+
+                                                      <p *ngIf="showInput" class="text-muted">&nbsp; (<strong class="text-danger">*</strong>) {{ 'members.noteRFID' | transloco }} &mdash; {{ counter }}/10</p>
+
+                                                      <div class="fv-plugins-message-container invalid-feedback">
+                                                        <div *ngIf="form.controls.key.touched && form.controls.key.hasError('required')">
+                                                          Key is required
+                                                        </div>
+                                              
+                                                        <div *ngIf="form.controls.key.dirty && form.controls.key.errors">
+                                                          Invalid Key
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              
+                                            
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'form.email' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="text"
+                                                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                [placeholder]="'members.email' | transloco" formControlName="email"
+                                                                name="email" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.email.touched && form.controls.email.hasError('required')">
+                                                                    Email is required
+                                                                </div>
+
+                                                                <div *ngIf="form.controls.email.dirty && form.controls.email.errors">
+                                                                    Invalid Email
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'form.phone' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="number"
+                                                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                [placeholder]="'members.phone' | transloco" formControlName="phone"
+                                                                name="phone" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.phone.touched && form.controls.phone.hasError('required')">
+                                                                    Phone is required
+                                                                </div>
+
+                                                                <div *ngIf="form.controls.phone.dirty && form.controls.phone.errors">
+                                                                    Invalid Phone
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'form.address' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="text"
+                                                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                [placeholder]="'members.address' | transloco" formControlName="address"
+                                                                name="address" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.address.touched && form.controls.address.hasError('required')">
+                                                                    Address is required
+                                                                </div>
+
+                                                                <div *ngIf="form.controls.address.dirty && form.controls.address.errors">
+                                                                    Invalid Address
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'form.birthdate' | transloco }}</label>
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="date"
+                                                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                placeholder="Birth Date" formControlName="birthDate"
+                                                                name="birthDate" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.birthDate.touched && form.controls.birthDate.hasError('required')">
+                                                                    Date is required
+                                                                </div>
+                                                                <div *ngIf="form.controls.birthDate.dirty && form.controls.birthDate.errors">
+                                                                    Invalid Date
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'form.gender' | transloco }}</label>
+                                            
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="gender"
+                                                                name="gender">
+                                                                <option value="" disabled selected>{{ 'form.selectgener' | transloco }}</option>
+                                                                <option value="MALE">{{ 'form.male' | transloco }}</option>
+                                                                <option value="FEMALE">{{ 'form.famele' | transloco }}</option>
+                                                                <option value="OTHER">{{ 'form.other' | transloco }}</option>
+                                                            </select>
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.gender.touched && form.controls.gender.hasError('required')">
+                                                                    Gender is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label fw-bold fs-6">{{ 'form.observations' | transloco }}</label>
+
+                                                <div class="col-lg-8 fv-row fv-plugins-icon-container">
+                                                    <textarea class="form-control form-control-lg form-control-solid" [placeholder]="'members.observations' | transloco" formControlName="observations" name="observations"></textarea>
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        <div *ngIf="form.controls.observations.touched && form.controls.observations.hasError('required')">
+                                                            Field is required
+                                                        </div>
+                                                        
+                                                        <div *ngIf="form.controls.observations.dirty && form.controls.observations.errors">
+                                                            Invalid
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6" *ngIf="auth.hasRole(['SUPERADMIN'])">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'form.gimnasio' | transloco }}</label>
+                                            
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="tenantId"
+                                                                name="tenantId">
+                                                                <option value="" disabled selected>{{ 'form.choosegym' | transloco }}</option>
+                                                                <option *ngFor="let gym of gyms" [value]="gym.id">{{ gym.name }}</option>
+                                                            </select>
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.tenantId.touched && form.controls.tenantId.hasError('required')">
+                                                                    Gym is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'form.profilepicture' | transloco }}</label>
+                                                
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <div *ngIf="editMember" class="scaleImagen">
+                                                                <img [src]="urlMember" class="imagen" *ngIf="urlMember">
+                                                                <input class="btn btn-danger text-uppercase" style="margin: 20px;" (click)="deleteImage()" type="button" value="{{ 'members.deletePhoto' | transloco }}" *ngIf="urlMember">
+                                                            </div>
+
+                                                            <div>
+                                                                <div class="" *ngIf="!urlMember">
+                                                                    <input class="inputImg" (change)="selectFile($event)" *ngIf="!imageSelected" type="file" formControlName="profilePicture" name="profilePicture">
+                                                                </div>
+
+                                                                <div *ngIf="previsualizacion && !urlMember">
+                                                                    <img style="width: 150px; height: 150px;" [src]="previsualizacion">
+                                                                </div>
+                                                                
+                                                                <br>
+                                                                
+                                                                <input class="btn btn-primary text-uppercase"  *ngIf="!fileSelected && !urlMember" (click)="checkPermissions()" type="button" value="{{ 'members.takePhoto' | transloco }}" />
+                                                                
+                                                                <p *ngIf="status && !urlMember">{{ 'members.statePhoto' | transloco }}: {{ status }}</p>
+                                                            </div>
+
+                                                            <div *ngIf="stream" class="d-flex flex-column align-items-center" style="height: auto; width: 100%;">
+                                                                <webcam [height]="190" [trigger]="$trigger" (imageCapture)="snapshot($event)" [imageQuality]="1" class="p-image-responsive" />
+                                                            </div>
+                                                                     <div>
+                                                                <input *ngIf="stream" class="btn btn-danger text-uppercase" (click)="captureImage()" type="button" value="{{ 'members.capturePhoto' | transloco }}" />
+                                                                   </div>
+
+
+
+                                                            <br>
+
+                                                            <div *ngIf="previewImage" class="d-flex flex-column">
+                                                                <h3 class="text-info text-center">&mdash; PREVIEW &mdash;</h3>
+                                                                <img class="preview img-fluid" [src]="previewImage">
+                                                            </div>
+                                                            <div class="m-2">
+                                                            <input *ngIf="previewImage" style="bottom: 10px;" class="btn btn-success text-uppercase" (click)="download()" type="button" value="{{ 'members.downloadPhoto' | transloco }}" />
+                                                            </div>
+
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.profilePicture.touched && form.controls.profilePicture.hasError('required')">
+                                                                    Profile picture is required
+                                                                </div>
+                                                                
+                                                                <div *ngIf="form.controls.profilePicture.dirty && form.controls.profilePicture.errors">
+                                                                    Invalid
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                            <button routerLink="/members/list" type="button" class="btn btn-dark">
+                                                {{ 'discard' | transloco }}
+                                            </button>
+
+                                            &nbsp;&nbsp;
+                                            
+                                            <button type="submit" class="btn btn-primary" [disabled]="loading">
+                                                <span *ngIf="!loading">{{ 'submit' | transloco }}</span>
+                                                <span *ngIf="loading">{{ 'waiting' | transloco }}</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-footer></app-footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

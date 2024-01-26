@@ -1,0 +1,232 @@
+<div id="loader" *ngIf="loading"></div>
+
+<div id="kt_body"
+    class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-enabled aside-fixed"
+    style="--kt-toolbar-height: 55px; --kt-toolbar-height-tablet-and-mobile: 55px">
+    <div class="d-flex flex-column flex-root">
+        <div class="page d-flex flex-row flex-column-fluid">
+            <app-leftmenu></app-leftmenu>
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+                <app-nav></app-nav>
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                    <div class="toolbar" id="kt_toolbar">
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend"
+                                data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}"
+                                class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
+                                    {{ 'memberships.manageMemberships' | transloco }}
+                                </h1>
+                                <span class="h-20px border-gray-300 border-start mx-4"></span>
+                                <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                                    <li class="breadcrumb-item text-dark" *ngIf="!loading">
+                                        <span *ngIf="membership.id">{{ 'memberships.updateMembership' | transloco }}</span>
+                                        <span *ngIf="!membership.id">{{ 'memberships.addMembership' | transloco }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="membership d-flex flex-column-fluid" id="kt_membership">
+                        <div id="kt_content_container" class="container-xxl">
+                            <div class="card mb-5 mb-xl-10">
+                                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse"
+                                    data-bs-target="#kt_account_profile_details" aria-expanded="true"
+                                    aria-controls="kt_account_profile_details">
+                                    <div class="card-title m-0">
+                                        <h3 class="fw-bolder m-0">
+                                            <span *ngIf="membership.id">{{ 'memberships.updateMembership' | transloco }}</span>
+                                            <span *ngIf="!membership.id">{{ 'memberships.addMembership' | transloco }}</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div id="kt_account_settings_profile_details" class="collapse show">
+                                    <form id="kt_account_profile_details_form"
+                                        class="form fv-plugins-bootstrap5 fv-plugins-framework" novalidate="novalidate"
+                                        [formGroup]="form" (submit)="submit()">
+                                        <div class="card-body border-top p-9">
+                                            <div class="row mb-6" *ngIf="auth.hasRole(['SUPERADMIN'])">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'form.gimnasio' | transloco }}</label>
+                                            
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="tenantId"
+                                                                name="tenantId">
+                                                                <option value="" disabled selected>{{ 'form.choosegym' | transloco }}</option>
+                                                                <option *ngFor="let gym of gyms" [value]="gym.id">{{ gym.name }}</option>
+                                                            </select>
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.tenantId.touched && form.controls.tenantId.hasError('required')">
+                                                                    Gym is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'form.name' | transloco }}</label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="text"
+                                                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                [placeholder]="'form.name' | transloco" formControlName="name"
+                                                                name="name" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.name.touched && form.controls.name.hasError('required')">
+                                                                    Name is required
+                                                                </div>
+
+                                                                <div *ngIf="form.controls.name.dirty && form.controls.name.errors">
+                                                                    Invalid Name
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'membership.price' | transloco }}</label>
+                                                <div class="col-lg-8">
+                                                    <div class="input-group">
+                                                        <span class="input-group-text">$</span>
+                                                        <input type="number" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" [placeholder]="'membership.price' | transloco" formControlName="price" name="price" />
+                                                    </div>
+                                                    <div class="fv-plugins-message-container invalid-feedback">
+                                                        <div *ngIf="form.controls.price.touched && form.controls.price.hasError('required')">
+                                                            Price is required
+                                                        </div>
+                                                        <div *ngIf="form.controls.price.dirty && form.controls.price.errors">
+                                                            Invalid Price
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>                                            
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label required fw-bold fs-6">{{ 'membership.type' | transloco }}</label>
+                                            
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <select class="form-select form-select-solid form-control-lg mb-3 mb-lg-0" formControlName="type"
+                                                                name="type">
+                                                                <option value="" disabled selected>{{ 'form.selecttype' | transloco }}</option>
+                                                                <option value="MONTHLY">{{ 'membership.monthly' | transloco }}</option>
+                                                                <option value="WEEKLY">{{ 'membership.weekly' | transloco }}</option>
+                                                                <option value="DAILY">{{ 'membership.daily' | transloco }}</option>
+                                                            </select>
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.type.touched && form.controls.type.hasError('required')">
+                                                                    Type is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                                    {{ 'membership.month' | transloco }} <span *ngIf="form.get('type').value === 'MONTHLY'" class="required-marker">*</span>
+                                                </label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="number"
+                                                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                [placeholder]="'membership.month' | transloco" formControlName="months"
+                                                                name="months" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.months.touched && form.controls.months.hasError('required')">
+                                                                    Months is required
+                                                                </div>
+
+                                                                <div *ngIf="form.controls.months.dirty && form.controls.months.errors">
+                                                                    Invalid Months
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                                    {{ 'membership.week' | transloco }} <span *ngIf="form.get('type').value === 'WEEKLY'" class="required-marker">*</span>
+                                                </label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="number"
+                                                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                [placeholder]="'membership.week' | transloco" formControlName="weeks"
+                                                                name="weeks" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.weeks.touched && form.controls.weeks.hasError('required')">
+                                                                    Weeks is required
+                                                                </div>
+
+                                                                <div *ngIf="form.controls.weeks.dirty && form.controls.weeks.errors">
+                                                                    Invalid Weeks
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row mb-6">
+                                                <label class="col-lg-4 col-form-label fw-bold fs-6">
+                                                    {{ 'membership.day' | transloco }} <span *ngIf="form.get('type').value === 'DAILY'" class="required-marker">*</span>
+                                                </label>
+
+                                                <div class="col-lg-8">
+                                                    <div class="row">
+                                                        <div class="col-lg-12 fv-row fv-plugins-icon-container">
+                                                            <input type="number"
+                                                                class="form-control form-control-lg form-control-solid mb-3 mb-lg-0"
+                                                                [placeholder]="'membership.day' | transloco" formControlName="days"
+                                                                name="days" />
+                                                            <div class="fv-plugins-message-container invalid-feedback">
+                                                                <div *ngIf="form.controls.days.touched && form.controls.days.hasError('required')">
+                                                                    Days is required
+                                                                </div>
+
+                                                                <div *ngIf="form.controls.days.dirty && form.controls.days.errors">
+                                                                    Invalid Days
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-end py-6 px-9">
+                                            <button routerLink="/memberships/list" type="button" class="btn btn-dark">
+                                                {{ 'discard' | transloco }}
+                                            </button>
+                                            &nbsp;&nbsp;
+                                            <button type="submit" class="btn btn-primary" [disabled]="loading">
+                                                <span *ngIf="!loading">{{ 'submit' | transloco }}</span>
+                                                <span *ngIf="loading">{{ 'waiting' | transloco }}</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <app-footer></app-footer>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
